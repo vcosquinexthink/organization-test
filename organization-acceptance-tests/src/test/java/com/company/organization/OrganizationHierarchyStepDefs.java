@@ -12,21 +12,24 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 @Testcontainers
-public class HierarchyStepDefs implements En {
+public class OrganizationHierarchyStepDefs implements En {
 
-    public HierarchyStepDefs() {
+    public OrganizationHierarchyStepDefs() {
 
         Given("we have set the following company hierarchy:", (io.cucumber.datatable.DataTable dataTable) -> {
+            assertThat(Infrastructure.applicationContainer.isRunning(), is(true));
             var request = HttpRequest.newBuilder(
-                URI.create("http://localhost:" + Infrastructure.applicationPort)).GET().build();
-            assertThat(newHttpClient().send(request, BodyHandlers.ofString()).statusCode(), is(200));
+                URI.create("http://localhost:" + Infrastructure.applicationPort + "/organization")).GET().build();
+            final var response = newHttpClient().send(request, BodyHandlers.ofString());
+            assertThat(response.statusCode(), is(200));
+            assertThat(response.body(), is("hello"));
         });
 
         When("^we check the company hierarchy$", () -> {
         });
 
         Then("^\"([^\"]*)\" is the supervisor of \"([^\"]*)\"$", (String employee, String supervisor) -> {
-            assertThat(Infrastructure.applicationContainer.isRunning(), is(true));
+            assertThat("something", is("broken"));
         });
     }
 
