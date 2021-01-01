@@ -22,7 +22,7 @@ import static org.hamcrest.core.Is.is;
 @Slf4j
 public class OrganizationHierarchyStepDefs implements En {
 
-    private String organization;
+    private Map<String, String> organization;
 
     public OrganizationHierarchyStepDefs() {
 
@@ -44,11 +44,10 @@ public class OrganizationHierarchyStepDefs implements En {
                 URI.create("http://localhost:" + applicationPort + "/organization")).GET().build();
             final var response = newHttpClient().send(request, ofString());
             assertThat(response.statusCode(), is(200));
-            organization = response.body();
+            organization = new ObjectMapper().readValue(response.body(), Map.class);
         });
 
         Then("^\"([^\"]*)\" is supervised by \"([^\"]*)\"$",
-            (String employee, String supervisor) ->
-                assertThat(new ObjectMapper().readValue(organization, Map.class).get(employee), is(supervisor)));
+            (String employee, String supervisor) -> assertThat(organization.get(employee), is(supervisor)));
     }
 }
