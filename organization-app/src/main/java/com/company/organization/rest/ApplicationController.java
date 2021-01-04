@@ -31,12 +31,4 @@ public class ApplicationController {
         return organization.getFlatOrganization();
     }
 
-//    public void setOrganizationTree(@RequestBody final Map<String, String> organizationMap) {
-//        log.info("received organizationMap {}", organizationMap.toString());
-//        final var allEmployees = new ArrayList<String>(new HashSet<>(organizationMap.values()));
-//        final var managedEmployees = organizationMap.keySet();
-//        allEmployees.removeAll(managedEmployees);
-//        organization.addEmployee(allEmployees.get(0));
-//        organizationMap.forEach((employee, manager) -> organization.addEmployee(employee, manager));
-//    }
 }
