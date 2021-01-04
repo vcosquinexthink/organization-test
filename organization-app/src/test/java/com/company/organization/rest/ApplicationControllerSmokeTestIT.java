@@ -1,12 +1,13 @@
-package com.company.organization.integration;
+package com.company.organization.rest;
 
-import com.company.organization.domain.Organization;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Map;
 
 /**
  * This test just guarantees spring boot is properly configured to start.
@@ -16,13 +17,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SmokeTestIT {
+public class ApplicationControllerSmokeTestIT {
 
     @Autowired
-    Organization organization;
+    ApplicationController controller;
 
     @Test
-    public void smokeTest() {
-        organization.getOrganization();
+    public void controllerShouldSetOrganization() {
+        controller.setOrganization(
+            Map.of("Pete", "Nick",
+                "Barbara", "Nick",
+                "Nick", "Sophie",
+                "Sophie", "Jonas"));
     }
 }

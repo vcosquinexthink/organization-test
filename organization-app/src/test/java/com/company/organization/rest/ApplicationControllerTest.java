@@ -29,7 +29,7 @@ class ApplicationControllerTest {
     public void getFlatOrganizationShouldCallOrganization() {
         final var organizationMap = Map.of("minion", "boss",
             "boss", "superboss");
-        when(organizationMock.getFlatOrganization()).thenReturn(organizationMap);
+        when(organizationMock.getOrganization()).thenReturn(organizationMap);
 
         final var flatOrganization = applicationController.getFlatOrganization();
 

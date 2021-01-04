@@ -1,7 +1,6 @@
 package com.company.organization.rest;
 
 import com.company.organization.domain.Organization;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,8 +26,8 @@ public class ApplicationController {
     }
 
     @GetMapping(value = "/organization", produces = "application/json")
-    public Map<String, String> getFlatOrganization() throws JsonProcessingException {
-        return organization.getFlatOrganization();
+    public Map<String, String> getFlatOrganization() {
+        return organization.getOrganization();
     }
 
 }

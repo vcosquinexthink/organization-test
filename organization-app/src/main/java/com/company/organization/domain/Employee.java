@@ -1,10 +1,10 @@
 package com.company.organization.domain;
 
-import lombok.Data;
+import lombok.Getter;
 
 import java.util.Objects;
 
-@Data
+@Getter
 public class Employee {
 
     String name;
