@@ -10,11 +10,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.nullValue;
 import static org.hamcrest.core.Is.is;
 
-class HierarchyTest {
+class OrganizationTest {
 
     @Test
     public void hierarchyShouldResolveManagedEmployee() {
-        final var hierarchy = new Hierarchy();
+        final var hierarchy = new Organization();
         Map.of("Pete", "Nick",
             "Barbara", "Nick",
             "Nick", "Sophie",
@@ -27,7 +27,7 @@ class HierarchyTest {
     @Test
     public void hierarchyShouldHaveCorrectStaff() {
 
-        final var hierarchy = new Hierarchy();
+        final var hierarchy = new Organization();
         hierarchy.addEmployee("Barbara", "Nick");
         assertThat(hierarchy.getManagedEmployee(
             new Employee("Barbara")).getParent(), is(new Employee("Nick")));
@@ -67,7 +67,7 @@ class HierarchyTest {
 
     @Test
     public void hierarchyShouldHaveCorrectStaffSize() {
-        final var hierarchy = new Hierarchy();
+        final var hierarchy = new Organization();
         Map.of("minion1", "boss",
             "minionc", "anothermoreboss",
             "miniond", "anothermoreboss",
@@ -82,7 +82,7 @@ class HierarchyTest {
 
     @Test
     public void hierarchyShouldHaveCorrectStaffSizeWithTwoRoots() {
-        final var hierarchy = new Hierarchy();
+        final var hierarchy = new Organization();
         Map.of("Pete", "Nick",
             "Barbara", "Nick",
             "Nick", "Sophie",
@@ -94,7 +94,7 @@ class HierarchyTest {
 
     @Test
     public void getRootEmployeeShouldReturnRootEmployee() {
-        final var hierarchy = new Hierarchy();
+        final var hierarchy = new Organization();
         Map.of("Jonas", "Carla",
             "Pete", "Nick",
             "Barbara", "Nick",
@@ -105,16 +105,33 @@ class HierarchyTest {
     }
 
     @Test
+    public void getEmployeesShouldReturnAllEmployees() {
+        final var hierarchy = new Organization();
+        Map.of("Jonas", "Carla",
+            "Pete", "Nick")
+            .forEach((employee, manager) -> hierarchy.addEmployee(employee, manager));
+        assertThat(hierarchy.getEmployees().size(), is(4));
+    }
+
+    @Test
     public void getRootEmployeeShouldFailIfNoRootPresent() {
         Assertions.assertThrows(NoSuchElementException.class, () -> {
-            new Hierarchy().getRootEmployee();
+            new Organization().getRootEmployee();
         });
     }
 
     @Test
     public void getManagedEmployeeShouldFailIfNoSuchEmployeePresent() {
         Assertions.assertThrows(NoSuchElementException.class, () -> {
-            new Hierarchy().getManagedEmployee(new Employee("foo"));
+            new Organization().getManagedEmployee(new Employee("foo"));
         });
+    }
+
+    @Test
+    public void hasRootShouldReturnTrueWhenRoot() {
+        final var hierarchy = new Organization();
+        assertThat(hierarchy.hasRootEmployee(), is(false));
+        hierarchy.addEmployees(Map.of("minion1", "boss"));
+        assertThat(hierarchy.hasRootEmployee(), is(true));
     }
 }

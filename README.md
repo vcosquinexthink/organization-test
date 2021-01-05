@@ -16,3 +16,4 @@ List of things yet to make and do
 * (-) change Set to HashMap in Hierarchy class to improve efficiency
 * (-) change List to Map in HierarchyRepresentation class to exactly match the contract of the test
 * (--) duplicated key in input map (http)
+* (---) faster creation of docker image with layers

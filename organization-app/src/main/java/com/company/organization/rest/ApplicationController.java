@@ -13,21 +13,23 @@ import java.util.Map;
 @Slf4j
 public class ApplicationController {
 
-    private Organization organization;
+    private final Organization organization;
 
-    public ApplicationController(final Organization organization) {
+    private final HierarchyRepresentation hierarchyRepresentation;
+
+    public ApplicationController(final Organization organization, final HierarchyRepresentation hierarchyRepresentation) {
         this.organization = organization;
+        this.hierarchyRepresentation = hierarchyRepresentation;
     }
 
     @PostMapping(value = "/organization", consumes = "application/json")
     public void setOrganization(@RequestBody final Map<String, String> organizationReceived) {
         log.info("received organization {}", organizationReceived.toString());
-        organizationReceived.forEach((employee, managedBy) -> organization.addEmployee(employee, managedBy));
+        organization.addEmployees(organizationReceived);
     }
 
     @GetMapping(value = "/organization", produces = "application/json")
-    public Map<String, String> getFlatOrganization() {
-        return organization.getOrganization();
+    public String getOrganization() {
+        return hierarchyRepresentation.toJson();
     }
-
 }

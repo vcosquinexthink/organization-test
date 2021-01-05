@@ -8,7 +8,6 @@ import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.company.organization.Infrastructure.applicationPort;
@@ -22,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 @Slf4j
 public class OrganizationHierarchyStepDefs implements En {
 
-    private Map<String, String> organization;
+    private String employeesBody;
 
     public OrganizationHierarchyStepDefs() {
 
@@ -44,10 +43,11 @@ public class OrganizationHierarchyStepDefs implements En {
                 URI.create("http://localhost:" + applicationPort + "/organization")).GET().build();
             final var response = newHttpClient().send(request, ofString());
             assertThat(response.statusCode(), is(200));
-            organization = new ObjectMapper().readValue(response.body(), Map.class);
+            employeesBody = response.body();
         });
 
-        Then("^\"([^\"]*)\" is supervised by \"([^\"]*)\"$",
-            (String employee, String supervisor) -> assertThat(organization.get(employee), is(supervisor)));
+        Then("^organization hierarchy is:$", (String expected) -> {
+            assertThat(employeesBody, is(expected.trim()));
+        });
     }
 }

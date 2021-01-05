@@ -8,7 +8,7 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
       | Nick     | Sophie     |
       | Sophie   | Jonas      |
     When we check the organization hierarchy
-    Then "Pete" is supervised by "Nick"
-     And "Barbara" is supervised by "Nick"
-     And "Nick" is supervised by "Sophie"
-     And "Sophie" is supervised by "Jonas"
+    Then organization hierarchy is:
+    """
+      {"Jonas":[{"Sophie":[{"Nick":[{"Pete":[]},{"Barbara":[]}]}]}]}
+    """

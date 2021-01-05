@@ -1,6 +1,6 @@
 package com.company.organization.integration;
 
-import com.company.organization.domain.Organization;
+import com.company.organization.rest.ApplicationController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class SmokeTestIT {
 
     @Autowired
-    Organization organization;
+    ApplicationController controller;
 
     @Test
     public void smokeTest() {
-        organization.getOrganization();
+        controller.getOrganization();
     }
 }

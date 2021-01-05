@@ -24,16 +24,16 @@ class ApplicationControllerTest {
     @Mock
     Organization organizationMock;
 
+    @Mock
+    HierarchyRepresentation hierarchyRepresentationMock;
+
     @Test
-    @SneakyThrows
-    public void getFlatOrganizationShouldCallOrganization() {
-        final var organizationMap = Map.of("minion", "boss",
-            "boss", "superboss");
-        when(organizationMock.getOrganization()).thenReturn(organizationMap);
+    public void getOrganizationShouldCallHierarchyRepresentation() {
+        when(hierarchyRepresentationMock.toJson()).thenReturn("{}");
 
-        final var flatOrganization = applicationController.getFlatOrganization();
+        final var hierarchyJson = applicationController.getOrganization();
 
-        assertThat(flatOrganization, is(organizationMap));
+        assertThat(hierarchyJson, is("{}"));
     }
 
     @Test
@@ -47,9 +47,7 @@ class ApplicationControllerTest {
 
         applicationController.setOrganization(employees);
 
-        verify(organizationMock).addEmployee("boss", "superboss");
-        verify(organizationMock).addEmployee("minion1", "boss");
-        verify(organizationMock).addEmployee("minion2", "boss");
+        verify(organizationMock).addEmployees(employees);
     }
 
 }
