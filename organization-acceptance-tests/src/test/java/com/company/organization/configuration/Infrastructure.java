@@ -1,4 +1,4 @@
-package com.company.organization;
+package com.company.organization.configuration;
 
 import io.cucumber.java8.En;
 import org.testcontainers.containers.GenericContainer;

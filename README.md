@@ -10,6 +10,10 @@ This will compile, test, etc the application, will create a jar and a local dock
 See the readme file inside the application module for instructions on how to run them.
 This build process will also execute the acceptance tests against that docker image to check if still meets the requirements.
   
+# assumptions
+* The employee name is unique and can not be duplicated
+* The system is protected for a single user with credentials "user" "password"
+
 # todos
 List of things yet to make and do
 * (+) two roots in org

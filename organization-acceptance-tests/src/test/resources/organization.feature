@@ -12,3 +12,7 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
     """
       {"Jonas":[{"Sophie":[{"Nick":[{"Pete":[]},{"Barbara":[]}]}]}]}
     """
+
+  Scenario: Users without credentials can not access the system
+    When we call the application with wrong credentials
+    Then we receive an unauthenticated code

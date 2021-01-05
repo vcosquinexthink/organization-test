@@ -1,4 +1,4 @@
-package com.company.organization;
+package com.company.organization.stepdefs;
 
 import io.cucumber.datatable.DataTable;
 import io.cucumber.java8.En;
@@ -10,7 +10,7 @@ import java.net.URI;
 import java.net.http.HttpRequest;
 import java.util.stream.Collectors;
 
-import static com.company.organization.Infrastructure.applicationPort;
+import static com.company.organization.configuration.Infrastructure.applicationPort;
 import static java.net.http.HttpClient.newHttpClient;
 import static java.net.http.HttpRequest.BodyPublishers.ofString;
 import static java.net.http.HttpResponse.BodyHandlers.ofString;
@@ -33,6 +33,7 @@ public class OrganizationHierarchyStepDefs implements En {
             final var request = HttpRequest.newBuilder(
                 URI.create("http://localhost:" + applicationPort + "/organization"))
                 .header("Content-type", "application/json")
+                .header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
                 .POST(organizationBodyPublisher).build();
             final var response = newHttpClient().send(request, ofString());
             assertThat(response.statusCode(), is(200));
@@ -40,7 +41,9 @@ public class OrganizationHierarchyStepDefs implements En {
 
         When("^we check the organization hierarchy$", () -> {
             final var request = HttpRequest.newBuilder(
-                URI.create("http://localhost:" + applicationPort + "/organization")).GET().build();
+                URI.create("http://localhost:" + applicationPort + "/organization"))
+                .header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
+                .GET().build();
             final var response = newHttpClient().send(request, ofString());
             assertThat(response.statusCode(), is(200));
             employeesBody = response.body();

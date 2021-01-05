@@ -7,8 +7,9 @@ import java.util.Objects;
 @Getter
 public class Employee {
 
-    String name;
-    Employee parent;
+    private String name;
+
+    private Employee parent;
 
     public Employee(final String name) {
         this.name = name;
