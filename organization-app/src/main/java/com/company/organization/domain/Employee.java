@@ -7,7 +7,7 @@ import java.util.Objects;
 @Getter
 public class Employee {
 
-    private String name;
+    private final String name;
 
     private Employee parent;
 

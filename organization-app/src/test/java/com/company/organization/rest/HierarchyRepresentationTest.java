@@ -3,6 +3,7 @@ package com.company.organization.rest;
 import com.company.organization.domain.Organization;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.util.Map;
@@ -10,9 +11,10 @@ import java.util.Map;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-class OrganizationRepresentationTest {
+class HierarchyRepresentationTest {
 
     @Test
+    @SneakyThrows
     public void itShouldReturnTheRightRepresentation() {
         final var organization = new Organization();
         organization.addEmployees(Map.of(

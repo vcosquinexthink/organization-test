@@ -13,25 +13,29 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class Organization {
 
-    private Set<Employee> employees = new HashSet<>();
+    private final Set<Employee> employees = new HashSet<>();
 
     public int staffSize() {
         return employees.size();
     }
 
     public Employee getRootEmployee() {
-        return employees.stream().filter(e -> e.isRoot()).findFirst().orElseThrow();
+        return employees.stream().filter(Employee::isRoot).findFirst().orElseThrow();
+    }
+
+    public boolean hasSeveralRootEmployees() {
+        return employees.stream().filter(Employee::isRoot).count() > 1;
     }
 
     public boolean hasRootEmployee() {
-        return employees.stream().anyMatch(e -> e.isRoot());
+        return employees.stream().anyMatch(Employee::isRoot);
     }
 
-    public Employee getManagedEmployee(Employee employee) {
+    public Employee getManagedEmployee(final Employee employee) {
         return employees.stream().filter(e -> e.equals(employee)).findFirst().orElseThrow();
     }
 
-    public List<Employee> getManagedEmployees(Employee employee) {
+    public List<Employee> getManagedEmployees(final Employee employee) {
         return employees.stream()
             .filter(e -> e.getParent() != null && e.getParent().equals(employee)).collect(toList());
     }
@@ -40,22 +44,26 @@ public class Organization {
         return new ArrayList<>(employees);
     }
 
-    public void addEmployees(final Map<String, String> employees) {
-        employees.forEach((employee, managedBy) -> addEmployee(employee, managedBy));
+    public void addEmployees(final Map<String, String> newEmployees) throws DuplicateRootException {
+        newEmployees.forEach(this::addEmployee);
+        if(hasSeveralRootEmployees()) {
+            final var roots = employees.stream().filter(Employee::isRoot).map(Employee::getName).collect(toList());
+            throw new DuplicateRootException("Error: More than one root was added: " + roots);
+        }
     }
 
-    void addEmployee(final String employeeName, final String managerName) {
+    private void addEmployee(final String employeeName, final String managerName) {
         final var parent = employees.stream().filter(e -> managerName.equals(e.getName()))
             .findFirst().orElse(new Employee(managerName));
         final var child = employees.stream().filter(e -> employeeName.equals(e.getName()))
             .findFirst().orElse(new Employee(employeeName));
+        child.addParent(parent);
         if (child.isRoot()) {
             employees.remove(child);
         }
         if (parent.isRoot()) {
             employees.remove(parent);
         }
-        child.addParent(parent);
         employees.add(child);
         employees.add(parent);
     }

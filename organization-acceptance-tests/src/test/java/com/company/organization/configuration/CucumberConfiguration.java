@@ -5,6 +5,4 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @CucumberContextConfiguration
 @SpringBootTest(classes = CucumberConfiguration.class)
-public class CucumberConfiguration {
-
-}
+public class CucumberConfiguration { }

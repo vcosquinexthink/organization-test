@@ -17,6 +17,7 @@ import static java.util.stream.Collectors.toList;
 public class HierarchyRepresentation {
 
     private final Organization organization;
+
     private final ObjectMapper objectMapper;
 
     public HierarchyRepresentation(final Organization organization, final ObjectMapper objectMapper) {
@@ -27,24 +28,21 @@ public class HierarchyRepresentation {
     public String toJson() {
         try {
             if (organization.hasRootEmployee()) {
-                final var rootEmployee = organization.getRootEmployee();
-                return objectMapper.writeValueAsString(employeeToJson(rootEmployee));
+                return objectMapper.writeValueAsString(employeeToJson(organization.getRootEmployee()));
             } else {
                 return objectMapper.writeValueAsString(new Object());
             }
         } catch (JsonProcessingException e) {
             log.error("unexpected error while writing hierarchy to json", e);
-            throw new RuntimeException();
+            throw new RuntimeException("unexpected error while writing hierarchy to json");
         }
     }
 
     private Map<String, List<Object>> employeeToJson(final Employee employee) {
-        return Map.of(employee.getName(),
-            childrenToList(organization.getManagedEmployees(employee))
-        );
+        return Map.of(employee.getName(), childrenToList(organization.getManagedEmployees(employee)));
     }
 
     private List<Object> childrenToList(final List<Employee> employees) {
-        return employees.stream().map(e -> employeeToJson(e)).collect(toList());
+        return employees.stream().map(this::employeeToJson).collect(toList());
     }
 }
