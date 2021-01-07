@@ -25,6 +25,7 @@ List of things yet to make and do
 * (-) in organization class some employee return types can be optional
 * (-) secure/externalize authentication
 * (--) more detailed info for user upon DuplicateRootException
+* (--) make acceptance tests verification independent of the lists order, for the moment added alphabetical order for a deterministic behaviour
 * (--) isRoot method in Employee should probably require an index to improve its performance
 * (--) duplicated key in input map (http)
 * (---) faster creation of docker image with layers

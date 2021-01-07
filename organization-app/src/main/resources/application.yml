@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:file:./database
+    url: jdbc:h2:file:./target/organization.database
 server:
   error:
     include-message: always

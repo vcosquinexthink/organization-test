@@ -10,7 +10,7 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
     When we check the organization hierarchy
     Then organization hierarchy is:
     """
-      {"Jonas":[{"Sophie":[{"Nick":[{"Pete":[]},{"Barbara":[]}]}]}]}
+      {"Jonas":[{"Sophie":[{"Nick":[{"Barbara":[]},{"Pete":[]}]}]}]}
     """
 
   Scenario: Organization hierarchy should prevent multiple roots from being added
@@ -21,7 +21,7 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
       | Nick     | Sophie     |
       | Sophie   | Jonas      |
       | Alma     | Carl       |
-    Then application rejects it with the following error message "Error: More than one root was added: [Carl, Jonas]"
+    Then application rejects it with the following error message "Error: More than one root was added: [Jonas, Carl]"
 
   Scenario: Users without credentials can not access the system
     When we call the application with wrong credentials

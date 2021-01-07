@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,8 @@ public class HierarchyRepresentation {
     public String toJson() {
         try {
             if (organization.hasRootEmployee()) {
-                return objectMapper.writeValueAsString(employeeToJson(organization.getRootEmployee()));
+                final var rootEmployee = employeeToJson(organization.getRootEmployee());
+                return objectMapper.writeValueAsString(rootEmployee);
             } else {
                 return objectMapper.writeValueAsString(new Object());
             }
@@ -43,6 +45,8 @@ public class HierarchyRepresentation {
     }
 
     private List<Object> childrenToList(final List<Employee> employees) {
-        return employees.stream().map(this::employeeToJson).collect(toList());
+        final List<Object> childrenToList = employees.stream().map(this::employeeToJson).collect(toList());
+        childrenToList.sort(Comparator.comparing(Object::toString));
+        return childrenToList;
     }
 }

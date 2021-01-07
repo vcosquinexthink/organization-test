@@ -5,18 +5,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
 public class EmployeeRepositoryTestIT {
-    
+
     @Autowired
     EmployeeRepository employeeRepository;
-    
+
     @Test
     public void itShouldPersistOnSave() {
         final var boss = new Employee("boss 1");
