@@ -4,6 +4,7 @@ import com.company.organization.infrastructure.EmployeeRepository;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,6 +17,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +35,7 @@ class OrganizationTest {
         final var manager = new Employee("manager 1");
         final var employee = new Employee("employee 1");
         employee.addManager(manager);
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of(employee, manager));
+        when(employeeRepositoryMock.findByNameIs("employee 1")).thenReturn(employee);
 
         final var foundEmployee = organization.getEmployee(
             new Employee("employee 1")).getManager();
@@ -45,9 +47,7 @@ class OrganizationTest {
     @Test
     public void getRootEmployeeShouldReturnRootEmployee() {
         final var manager = new Employee("manager 1");
-        final var employee = new Employee("employee 1");
-        employee.addManager(manager);
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of(employee, manager));
+        when(employeeRepositoryMock.findRoots()).thenReturn(List.of(manager));
 
         assertThat(organization.getRootEmployee(), is(new Employee("manager 1")));
     }
@@ -71,14 +71,14 @@ class OrganizationTest {
         employee1.addManager(manager);
         final var employee2 = new Employee("employee1 2");
         employee2.addManager(manager);
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of(employee1, employee2, manager));
+        when(employeeRepositoryMock.findByManagerIs(manager)).thenReturn(List.of(employee1, employee2));
 
         assertThat(organization.getManagedEmployees(new Employee("manager 1")), contains(employee1, employee2));
     }
 
     @Test
     public void getRootEmployeeShouldFailIfNoRootPresent() {
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of());
+        when(employeeRepositoryMock.findRoots()).thenReturn(List.of());
         assertThrows(NoSuchElementException.class, () -> {
             organization.getRootEmployee();
         });
@@ -86,7 +86,7 @@ class OrganizationTest {
 
     @Test
     public void getManagedEmployeeShouldFailIfNoSuchEmployeePresent() {
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of());
+        when(employeeRepositoryMock.findByNameIs("foo")).thenThrow(new NoSuchElementException());
         assertThrows(NoSuchElementException.class, () -> {
             organization.getEmployee(new Employee("foo"));
         });
@@ -95,31 +95,47 @@ class OrganizationTest {
     @Test
     @SneakyThrows
     public void hasRootShouldReturnTrueWhenRoot() {
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of());
+        when(employeeRepositoryMock.countRoots()).thenReturn((long) 0);
+
         assertThat(organization.hasRootEmployee(), is(false));
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of(new Employee("root")));
+
+        when(employeeRepositoryMock.countRoots()).thenReturn((long) 1);
+
         assertThat(organization.hasRootEmployee(), is(true));
     }
 
     @Test
     @SneakyThrows
     public void hasSeveralRootEmployeesShouldReturnTrueWhenSeveralRoots() {
-        final var oneRoot = List.of(new Employee("root"));
-        when(employeeRepositoryMock.findAll()).thenReturn(oneRoot);
+        when(employeeRepositoryMock.countRoots()).thenReturn((long) 1);
+
         assertThat(organization.hasSeveralRootEmployees(), is(false));
-        final var twoRoots = List.of(new Employee("root"), new Employee("root2"));
-        when(employeeRepositoryMock.findAll()).thenReturn(twoRoots);
+
+        when(employeeRepositoryMock.countRoots()).thenReturn((long) 2);
+
         assertThat(organization.hasSeveralRootEmployees(), is(true));
     }
 
     @Test
-    public void hierarchyShouldFailWhenMoreThanOneRoot() {
-        final var twoRoots = List.of(new Employee("root"), new Employee("root2"));
-        when(employeeRepositoryMock.findAll()).thenReturn(twoRoots);
+    public void addEmployeesShouldFailWhenMoreThanOneRoot() {
+        when(employeeRepositoryMock.countRoots()).thenReturn((long) 2);
 
         assertThrows(DuplicateRootException.class, () -> {
-            organization.addEmployees(Map.of("employee 1", "manager 1",
-                "employee 2", "manager 2"));
+            organization.addEmployees(Map.of());
         });
+    }
+
+    @Test
+    @SneakyThrows
+    public void addEmployeesShouldCallRepositorySaveAndSetManager() {
+        final var savedEmployee1Captor = ArgumentCaptor.forClass(Employee.class);
+        final var employee1 = new Employee("employee1");
+        final var boss = new Employee("b");
+        when(employeeRepositoryMock.findByNameOrCreate("employee1")).thenReturn(employee1);
+        when(employeeRepositoryMock.findByNameOrCreate("b")).thenReturn(boss);
+        organization.addEmployees(Map.of("employee1", "b"));
+
+        verify(employeeRepositoryMock).save(savedEmployee1Captor.capture());
+        assertThat(savedEmployee1Captor.getValue().getManager(), is(boss));
     }
 }

@@ -22,9 +22,7 @@ public class Employee {
     @ManyToOne(cascade = CascadeType.ALL)
     private Employee manager;
 
-    public Employee() {
-
-    }
+    public Employee() { }
 
     public Employee(final String name) {
         this.name = name;
