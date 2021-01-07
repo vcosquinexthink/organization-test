@@ -18,6 +18,7 @@ This build process will also execute the acceptance tests against that docker im
 List of things yet to make and do
 * (+) cyclic dependencies
 * (+) more integration tests for security config
+* (-) volume and performance tests to define system limits ant its behaviour beyond them
 * (-) change Set to HashMap in Hierarchy class to improve efficiency
 * (-) change List to Map in HierarchyRepresentation class to exactly match the contract of the test
 * (-) in organization class some employee return types can be optional

@@ -2,25 +2,40 @@ package com.company.organization.domain;
 
 import lombok.Getter;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Objects;
 
+@Entity
 @Getter
 public class Employee {
 
-    private final String name;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-    private Employee parent;
+    private String name;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Employee manager;
+
+    public Employee() {
+
+    }
 
     public Employee(final String name) {
         this.name = name;
     }
 
-    public void addParent(final Employee parent) {
-        this.parent = parent;
+    public void addManager(final Employee parent) {
+        this.manager = parent;
     }
 
     public boolean isRoot() {
-        return parent == null;
+        return manager == null;
     }
 
     @Override

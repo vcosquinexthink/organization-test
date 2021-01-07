@@ -15,7 +15,7 @@ class EmployeeTest {
     public void itShouldBeEqualForSameName() {
         final var employee = new Employee("emp-1");
         assertThat(EMPLOYEE, is(equalTo(employee)));
-        employee.addParent(BOSS);
+        employee.addManager(BOSS);
         assertThat(EMPLOYEE, is(equalTo(employee)));
     }
 
@@ -23,7 +23,7 @@ class EmployeeTest {
     public void itShouldBeSameHashCode() {
         final var employee = new Employee("emp-1");
         assertThat(EMPLOYEE.hashCode(), is(equalTo(employee.hashCode())));
-        employee.addParent(BOSS);
+        employee.addManager(BOSS);
         assertThat(EMPLOYEE.hashCode(), is(equalTo(employee.hashCode())));
     }
 
@@ -35,7 +35,7 @@ class EmployeeTest {
     @Test
     public void itShouldNotBeRoot() {
         final var employee = new Employee("emp-1");
-        employee.addParent(BOSS);
+        employee.addManager(BOSS);
         assertThat(employee.isRoot(), is(false));
     }
 }

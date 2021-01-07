@@ -21,7 +21,7 @@ class OrganizationTest {
             "Nick", "Sophie",
             "Sophie", "Jonas"));
         assertThat(hierarchy.getManagedEmployee(
-            new Employee("Pete")).getParent(), is(new Employee("Nick")));
+            new Employee("Pete")).getManager(), is(new Employee("Nick")));
     }
 
     @SneakyThrows

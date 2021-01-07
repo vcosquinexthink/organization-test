@@ -37,7 +37,7 @@ public class Organization {
 
     public List<Employee> getManagedEmployees(final Employee employee) {
         return employees.stream()
-            .filter(e -> e.getParent() != null && e.getParent().equals(employee)).collect(toList());
+            .filter(e -> e.getManager() != null && e.getManager().equals(employee)).collect(toList());
     }
 
     public List<Employee> getEmployees() {
@@ -57,7 +57,7 @@ public class Organization {
             .findFirst().orElse(new Employee(managerName));
         final var child = employees.stream().filter(e -> employeeName.equals(e.getName()))
             .findFirst().orElse(new Employee(employeeName));
-        child.addParent(parent);
+        child.addManager(parent);
         if (child.isRoot()) {
             employees.remove(child);
         }
