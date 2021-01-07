@@ -17,12 +17,14 @@ This build process will also execute the acceptance tests against that docker im
 # todos
 List of things yet to make and do
 * (+) cyclic dependencies
-* (+) more integration tests for security config
-* (-) volume and performance tests to define system limits ant its behaviour beyond them
+* (+) properly handle updates on existing organization
+* (+) volume and performance tests to define system limits ant its behaviour beyond them
+* (-) more integration tests for security config
 * (-) change Set to HashMap in Hierarchy class to improve efficiency
 * (-) change List to Map in HierarchyRepresentation class to exactly match the contract of the test
 * (-) in organization class some employee return types can be optional
 * (-) secure/externalize authentication
 * (--) more detailed info for user upon DuplicateRootException
+* (--) isRoot method in Employee should probably require an index to improve its performance
 * (--) duplicated key in input map (http)
 * (---) faster creation of docker image with layers
