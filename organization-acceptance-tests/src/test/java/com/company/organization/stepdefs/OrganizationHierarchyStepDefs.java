@@ -23,6 +23,7 @@ import static org.hamcrest.core.Is.is;
 public class OrganizationHierarchyStepDefs implements En {
 
     private String employeesBody;
+    private String employeeBody;
     private Map<Object, Object> organizationMap;
 
     public OrganizationHierarchyStepDefs() {
@@ -55,7 +56,7 @@ public class OrganizationHierarchyStepDefs implements En {
             assertThat(employeesBody, is(expected.trim()));
         });
 
-        When("^we try to set the following organization hierarchy:", (final DataTable dataTable) -> {
+        When("^we try to add the following organization hierarchy:", (final DataTable dataTable) -> {
             organizationMap = dataTable.asLists(String.class).stream().skip(1)
                 .collect(Collectors.toMap(row -> row.get(0), row -> row.get(1)));
         });
@@ -72,6 +73,20 @@ public class OrganizationHierarchyStepDefs implements En {
             assertThat(response.statusCode(), is(400));
             final var responseMap = new ObjectMapper().readValue(response.body(), Map.class);
             assertThat(responseMap.get("message"), is(errorMessage));
+        });
+
+        When("^we check the management chain for \"([^\"]*)\"$", (String employeeName) -> {
+            final var request = newBuilder(
+                create("http://localhost:" + applicationPort + "/organization/employee/" + employeeName))
+                .header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
+                .GET().build();
+            final var response = newHttpClient().send(request, ofString());
+            assertThat(response.statusCode(), is(200));
+            employeeBody = response.body();
+        });
+
+        Then("^management chain is:$", (String expected) -> {
+            assertThat(employeeBody, is(expected.trim()));
         });
     }
 }

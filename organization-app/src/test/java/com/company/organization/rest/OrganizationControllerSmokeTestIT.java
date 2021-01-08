@@ -23,10 +23,10 @@ import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFOR
 @SpringBootTest
 @AutoConfigureMockMvc
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
-public class ApplicationControllerSmokeTestIT {
+public class OrganizationControllerSmokeTestIT {
 
     @Autowired
-    ApplicationController controller;
+    OrganizationController controller;
 
     @Test
     public void controllerShouldSetOrganization() {

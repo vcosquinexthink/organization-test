@@ -30,7 +30,7 @@ public class EmployeeRepositoryTestIT {
         manager.addManager(boss);
         employeeRepository.save(employee);
 
-        final var employee1 = employeeRepository.findByNameIs("employee 1");
+        final var employee1 = employeeRepository.findByNameIs("employee 1").get();
         assertThat(employee1, is(employee));
         assertThat(employee1.getManager(), is(manager));
         assertThat(employee1.getManager().getManager(), is(boss));

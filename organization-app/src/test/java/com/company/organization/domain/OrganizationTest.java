@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
@@ -35,7 +36,7 @@ class OrganizationTest {
         final var manager = new Employee("manager 1");
         final var employee = new Employee("employee 1");
         employee.addManager(manager);
-        when(employeeRepositoryMock.findByNameIs("employee 1")).thenReturn(employee);
+        when(employeeRepositoryMock.findByNameIs("employee 1")).thenReturn(Optional.of(employee));
 
         final var foundEmployee = organization.getEmployee(
             new Employee("employee 1")).getManager();

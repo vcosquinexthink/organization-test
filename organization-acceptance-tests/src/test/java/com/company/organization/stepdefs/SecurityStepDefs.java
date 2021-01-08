@@ -30,7 +30,7 @@ public class SecurityStepDefs implements En {
             statusCode = response.statusCode();
         });
 
-        Then("^we receive an unauthenticated code$", () -> {
+        Then("^we receive an unauthenticated error code$", () -> {
             assertThat(statusCode, is(401));
         });
     }

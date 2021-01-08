@@ -37,7 +37,7 @@ public class Organization {
     }
 
     public Employee getEmployee(final Employee employee) {
-        return employeeRepository.findByNameIs(employee.getName());
+        return employeeRepository.findByNameIs(employee.getName()).orElseThrow(() -> new NoSuchElementException());
     }
 
     public List<Employee> getManagedEmployees(final Employee manager) {

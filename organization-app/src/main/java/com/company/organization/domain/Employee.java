@@ -1,5 +1,7 @@
 package com.company.organization.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 import javax.persistence.CascadeType;
@@ -15,11 +17,13 @@ public class Employee {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Employee manager;
 
     public Employee() { }
@@ -32,6 +36,7 @@ public class Employee {
         this.manager = parent;
     }
 
+    @JsonIgnore
     public boolean isRoot() {
         return manager == null;
     }

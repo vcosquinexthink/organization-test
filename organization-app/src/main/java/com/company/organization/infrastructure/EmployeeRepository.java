@@ -4,14 +4,14 @@ import com.company.organization.domain.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    Employee findByNameIs(String name);
+    Optional<Employee> findByNameIs(String name);
 
     default Employee findByNameOrCreate(String name) {
-        final var found = findByNameIs(name);
-        return found != null ? found : new Employee(name);
+        return findByNameIs(name).orElseGet(() -> new Employee(name));
     }
 
     List<Employee> findDistinctByManagerIsNull();

@@ -21,10 +21,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ApplicationControllerTest {
+class OrganizationControllerTest {
 
     @InjectMocks
-    ApplicationController applicationController;
+    OrganizationController organizationController;
 
     @Mock
     Organization organizationMock;
@@ -36,7 +36,7 @@ class ApplicationControllerTest {
     public void getOrganizationShouldCallHierarchyRepresentation() {
         when(hierarchyRepresentationMock.toJson()).thenReturn("{}");
 
-        final var hierarchyJson = applicationController.getOrganization();
+        final var hierarchyJson = organizationController.getOrganization();
 
         assertThat(hierarchyJson, is("{}"));
     }
@@ -49,7 +49,7 @@ class ApplicationControllerTest {
             "minion2", "boss",
             "boss", "superboss"
         );
-        applicationController.setOrganization(employees);
+        organizationController.setOrganization(employees);
 
         verify(organizationMock).addEmployees(employees);
     }
@@ -60,7 +60,7 @@ class ApplicationControllerTest {
         doThrow(new DuplicateRootException("")).when(organizationMock).addEmployees(any());
 
         assertThrows(ResponseStatusException.class, () -> {
-            applicationController.setOrganization(Map.of());
+            organizationController.setOrganization(Map.of());
         });
     }
 }
