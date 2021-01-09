@@ -26,6 +26,12 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
       | Alma     | Carl       |
     Then application rejects it with the following error message "Error: More than one root was added: [Jonas, Carl]"
 
+  Scenario: Organization hierarchy should prevent cyclic dependencies
+    When we try to add the following organization hierarchy:
+      | employee | supervisor |
+      | Sophie   | Nick       |
+    Then application rejects it with the following error message "Error: There is a cyclic dependency in employee [Nick]"
+
   Scenario: Users without credentials can not access the system
     When we call the application with wrong credentials
     Then we receive an unauthenticated error code

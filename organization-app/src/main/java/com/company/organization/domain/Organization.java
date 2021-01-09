@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
 
 @Component
@@ -45,12 +46,13 @@ public class Organization {
     }
 
     @Transactional
-    public void addEmployees(final Map<String, String> newEmployees) throws DuplicateRootException {
+    public void addEmployees(final Map<String, String> newEmployees) throws DuplicateRootException, CyclicDependencyException {
         newEmployees.forEach((employeeName, managerName) -> {
             final var employee = employeeRepository.findByNameOrCreate(employeeName);
             final var manager = employeeRepository.findByNameOrCreate(managerName);
             employee.setManager(manager);
             manager.addManaged(employee);
+            checkCyclicDep(employee, employee);
             employeeRepository.save(employee);
         });
         if (hasSeveralRootEmployees()) {
@@ -60,4 +62,15 @@ public class Organization {
         }
     }
 
+    private void checkCyclicDep(final Employee employee, final Employee self) {
+        if (!employee.isRoot()) {
+            final var manager = employee.getManager();
+            if (manager != null) {
+                if (manager.equals(self)) {
+                    throw new CyclicDependencyException(format("Error: There is a cyclic dependency in employee [%s]", employee.getName()));
+                }
+                checkCyclicDep(manager, employee);
+            }
+        }
+    }
 }

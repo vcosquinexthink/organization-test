@@ -1,5 +1,6 @@
 package com.company.organization.rest;
 
+import com.company.organization.domain.CyclicDependencyException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.annotation.DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD;
 
 /**
@@ -55,8 +57,22 @@ public class OrganizationControllerSmokeTestIT {
             is("{\"Jonas\":[{\"Sophie\":[{\"Nick\":[{\"Barbara\":[]},{\"Pete\":[]}]}]}]}"));
 
         controller.setOrganization(Map.of(
-                "Angela", "Jonas"));
+            "Angela", "Jonas"));
         assertThat(controller.getOrganization(),
             is("{\"Jonas\":[{\"Angela\":[]},{\"Sophie\":[{\"Nick\":[{\"Barbara\":[]},{\"Pete\":[]}]}]}]}"));
+    }
+
+    @Test
+    @Transactional
+    public void controllerShouldPreventCyclicDependencies() {
+        controller.setOrganization(
+            Map.of("Pete", "Nick",
+                "Barbara", "Nick",
+                "Nick", "Sophie",
+                "Sophie", "Jonas"));
+        final var exception = assertThrows(CyclicDependencyException.class, () -> {
+            controller.setOrganization(Map.of("Sophie", "Nick"));
+        });
+        assertThat(exception.getMessage(), is("Error: There is a cyclic dependency in employee [Nick]"));
     }
 }

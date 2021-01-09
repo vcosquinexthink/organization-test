@@ -26,8 +26,7 @@ public class SecurityStepDefs implements En {
                 URI.create("http://localhost:" + applicationPort + "/organization"))
                 .header("Authorization", "Basic xXxXxXxXxXxXxXxXxX==")
                 .GET().build();
-            final var response = newHttpClient().send(request, ofString());
-            statusCode = response.statusCode();
+            statusCode = newHttpClient().send(request, ofString()).statusCode();
         });
 
         Then("^we receive an unauthenticated error code$", () -> {

@@ -18,14 +18,12 @@ This build process will also execute the acceptance tests against that docker im
 
 # todos
 List of things yet to make and do
-* (+) cyclic dependencies
-* (+) self reference
 * (+) volume and performance tests to define system limits ant its behaviour beyond them
+* (+) identify more potential errors in input
 * (-) do not expose entities externally as json objects
 * (-) make acceptance tests scenarios independent with database cleanup between them
 * (-) add an index to employee name field in database
 * (-) change List to Map in HierarchyRepresentation class to exactly match the contract of the test
 * (-) secure/externalize authentication
-* (-) handle updates on existing organization
 * (--) more integration tests for security config
 * (--) faster creation of docker image with layers

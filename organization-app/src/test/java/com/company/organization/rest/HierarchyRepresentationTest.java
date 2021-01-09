@@ -2,6 +2,7 @@ package com.company.organization.rest;
 
 import com.company.organization.domain.Employee;
 import com.company.organization.domain.Organization;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.SneakyThrows;
@@ -13,6 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,6 +26,9 @@ class HierarchyRepresentationTest {
 
     @Mock
     Organization organizationMock;
+
+    @Mock
+    ObjectMapper objectMapperMock;
 
     @BeforeEach
     void setUp() {
@@ -57,5 +64,17 @@ class HierarchyRepresentationTest {
         final var json = hierarchyRepresentation.toJson();
 
         assertThat(json, is("{}"));
+    }
+
+    @Test
+    @SneakyThrows
+    public void itShouldThrowRuntimeExceptionWhenJSONException() {
+        hierarchyRepresentation = new HierarchyRepresentation(organizationMock, objectMapperMock);
+        final var jsonExceptionMock = mock(JsonProcessingException.class);
+        when(objectMapperMock.writeValueAsString(any())).thenThrow(jsonExceptionMock);
+
+        assertThrows(RuntimeException.class, () -> {
+            hierarchyRepresentation.toJson();
+        });
     }
 }

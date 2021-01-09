@@ -4,9 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-public class DuplicateRootException extends RuntimeException {
+public class CyclicDependencyException extends RuntimeException {
 
-    public DuplicateRootException(final String message) {
+    public CyclicDependencyException(final String message) {
         super(message);
     }
 }

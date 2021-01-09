@@ -1,6 +1,6 @@
 package com.company.organization.rest;
 
-import com.company.organization.domain.DuplicateRootException;
+import com.company.organization.domain.Employee;
 import com.company.organization.domain.Organization;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -8,15 +8,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -36,9 +32,7 @@ class OrganizationControllerTest {
     public void getOrganizationShouldCallHierarchyRepresentation() {
         when(hierarchyRepresentationMock.toJson()).thenReturn("{}");
 
-        final var hierarchyJson = organizationController.getOrganization();
-
-        assertThat(hierarchyJson, is("{}"));
+        assertThat(organizationController.getOrganization(), is("{}"));
     }
 
     @Test
@@ -56,11 +50,10 @@ class OrganizationControllerTest {
 
     @Test
     @SneakyThrows
-    public void setOrganizationShouldThrowResponseStatusExceptionWhenDuplicateRoot() {
-        doThrow(new DuplicateRootException("")).when(organizationMock).addEmployees(any());
+    public void getEmployeeShouldReturnEmployee() {
+        final var employee = new Employee("employee-1");
+        when(organizationMock.getEmployee(employee)).thenReturn(employee);
 
-        assertThrows(ResponseStatusException.class, () -> {
-            organizationController.setOrganization(Map.of());
-        });
+        assertThat(organizationController.getEmployee("employee-1"), is(employee));
     }
 }

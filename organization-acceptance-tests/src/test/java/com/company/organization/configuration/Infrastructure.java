@@ -11,8 +11,8 @@ public class Infrastructure implements En {
     public static final Integer applicationPort;
 
     static {
-        applicationContainer = new GenericContainer<>("docker.io/library/organization-app:latest")
-            .withExposedPorts(8080);
+        applicationContainer = new GenericContainer<>(
+            "docker.io/library/organization-app:latest").withExposedPorts(8080);
         applicationContainer.start();
         applicationPort = applicationContainer.getMappedPort(8080);
     }
