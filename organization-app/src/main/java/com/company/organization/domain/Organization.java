@@ -40,10 +40,6 @@ public class Organization {
         return employeeRepository.findByNameIs(employee.getName()).orElseThrow(() -> new NoSuchElementException());
     }
 
-    public List<Employee> getManagedEmployees(final Employee manager) {
-        return employeeRepository.findByManagerIs(manager);
-    }
-
     public List<Employee> getEmployees() {
         return employeeRepository.findAll();
     }
@@ -53,7 +49,8 @@ public class Organization {
         newEmployees.forEach((employeeName, managerName) -> {
             final var employee = employeeRepository.findByNameOrCreate(employeeName);
             final var manager = employeeRepository.findByNameOrCreate(managerName);
-            employee.addManager(manager);
+            employee.setManager(manager);
+            manager.addManaged(employee);
             employeeRepository.save(employee);
         });
         if (hasSeveralRootEmployees()) {

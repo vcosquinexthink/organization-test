@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
@@ -39,12 +37,13 @@ class HierarchyRepresentationTest {
         final var jonas = new Employee("Jonas");
         when(organizationMock.getRootEmployee()).thenReturn(jonas);
         final var sophie = new Employee("Sophie");
-        when(organizationMock.getManagedEmployees(jonas)).thenReturn(List.of(sophie));
+        jonas.addManaged(sophie);
         final var nick = new Employee("Nick");
-        when(organizationMock.getManagedEmployees(sophie)).thenReturn(List.of(nick));
+        sophie.addManaged(nick);
         final var pete = new Employee("Pete");
         final var barbara = new Employee("Barbara");
-        when(organizationMock.getManagedEmployees(nick)).thenReturn(List.of(pete, barbara));
+        nick.addManaged(pete);
+        nick.addManaged(barbara);
 
         final var json = hierarchyRepresentation.toJson();
 

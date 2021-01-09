@@ -8,7 +8,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,7 +28,12 @@ public class Employee {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JoinColumn(name = "manager")
     private Employee manager;
+
+    @OneToMany
+    @JsonIgnore
+    private List<Employee> managed = new ArrayList();
 
     public Employee() { }
 
@@ -32,8 +41,12 @@ public class Employee {
         this.name = name;
     }
 
-    public void addManager(final Employee parent) {
+    public void setManager(final Employee parent) {
         this.manager = parent;
+    }
+
+    public void addManaged(Employee managed) {
+        this.managed.add(managed);
     }
 
     @JsonIgnore

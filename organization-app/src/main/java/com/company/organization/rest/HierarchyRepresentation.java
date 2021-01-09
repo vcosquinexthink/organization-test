@@ -41,7 +41,7 @@ public class HierarchyRepresentation {
     }
 
     private Map<String, List<Object>> employeeToJson(final Employee employee) {
-        return Map.of(employee.getName(), childrenToList(organization.getManagedEmployees(employee)));
+        return Map.of(employee.getName(), childrenToList(employee.getManaged()));
     }
 
     private List<Object> childrenToList(final List<Employee> employees) {

@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.transaction.Transactional;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,6 +30,7 @@ public class OrganizationControllerSmokeTestIT {
     OrganizationController controller;
 
     @Test
+    @Transactional
     public void controllerShouldSetOrganization() {
         controller.setOrganization(
             Map.of("Pete", "Nick",
@@ -38,5 +40,23 @@ public class OrganizationControllerSmokeTestIT {
 
         assertThat(controller.getOrganization(),
             is("{\"Jonas\":[{\"Sophie\":[{\"Nick\":[{\"Barbara\":[]},{\"Pete\":[]}]}]}]}"));
+    }
+
+    @Test
+    @Transactional
+    public void controllerShouldUpdateOrganization() {
+        controller.setOrganization(
+            Map.of("Pete", "Nick",
+                "Barbara", "Nick",
+                "Nick", "Sophie",
+                "Sophie", "Jonas"));
+
+        assertThat(controller.getOrganization(),
+            is("{\"Jonas\":[{\"Sophie\":[{\"Nick\":[{\"Barbara\":[]},{\"Pete\":[]}]}]}]}"));
+
+        controller.setOrganization(Map.of(
+                "Angela", "Jonas"));
+        assertThat(controller.getOrganization(),
+            is("{\"Jonas\":[{\"Angela\":[]},{\"Sophie\":[{\"Nick\":[{\"Barbara\":[]},{\"Pete\":[]}]}]}]}"));
     }
 }

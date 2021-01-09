@@ -14,18 +14,18 @@ This build process will also execute the acceptance tests against that docker im
 * The employee name is unique and can not be duplicated
 * The system is protected for a single user with credentials "user" "password"
 * Some results will be alphabetically ordered for easier testing
+* the test says explicitly 'I want to send the name of an employee to an endpoint, and receive the name of the supervisor and the name of the supervisor’s supervisor in return.' up to two levels however I decided to implement the full hierarchy up to the root employee
 
 # todos
 List of things yet to make and do
-* (?) check just 2 levels up
 * (+) cyclic dependencies
-* (+) properly handle updates on existing organization
+* (+) self reference
 * (+) volume and performance tests to define system limits ant its behaviour beyond them
-* (+) do not expose entities externally as json objects
-* (+) ManyToOne possibility in employee to avoid expensive search of managers
+* (-) do not expose entities externally as json objects
 * (-) make acceptance tests scenarios independent with database cleanup between them
 * (-) add an index to employee name field in database
 * (-) change List to Map in HierarchyRepresentation class to exactly match the contract of the test
 * (-) secure/externalize authentication
+* (-) handle updates on existing organization
 * (--) more integration tests for security config
 * (--) faster creation of docker image with layers

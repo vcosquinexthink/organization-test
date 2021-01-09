@@ -35,7 +35,7 @@ class OrganizationTest {
     public void hierarchyShouldResolveManagedEmployee() {
         final var manager = new Employee("manager 1");
         final var employee = new Employee("employee 1");
-        employee.addManager(manager);
+        employee.setManager(manager);
         when(employeeRepositoryMock.findByNameIs("employee 1")).thenReturn(Optional.of(employee));
 
         final var foundEmployee = organization.getEmployee(
@@ -58,23 +58,10 @@ class OrganizationTest {
     public void getEmployeesShouldReturnAllEmployees() {
         final var manager = new Employee("manager 1");
         final var employee = new Employee("employee 1");
-        employee.addManager(manager);
+        employee.setManager(manager);
         when(employeeRepositoryMock.findAll()).thenReturn(List.of(employee, manager));
 
         assertThat(organization.getEmployees(), contains(employee, manager));
-    }
-
-    @SneakyThrows
-    @Test
-    public void getManagedEmployeesNewShouldReturnEmployeeWithManager() {
-        final var manager = new Employee("manager 1");
-        final var employee1 = new Employee("employee1 1");
-        employee1.addManager(manager);
-        final var employee2 = new Employee("employee1 2");
-        employee2.addManager(manager);
-        when(employeeRepositoryMock.findByManagerIs(manager)).thenReturn(List.of(employee1, employee2));
-
-        assertThat(organization.getManagedEmployees(new Employee("manager 1")), contains(employee1, employee2));
     }
 
     @Test
