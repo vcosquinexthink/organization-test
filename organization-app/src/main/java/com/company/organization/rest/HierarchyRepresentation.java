@@ -2,7 +2,6 @@ package com.company.organization.rest;
 
 import com.company.organization.domain.Employee;
 import com.company.organization.domain.Organization;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,8 +11,9 @@ import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
 @Component
-@Slf4j
 public class HierarchyRepresentation {
+
+    public static final Object EMPTY = new Object();
 
     private final Organization organization;
 
@@ -38,5 +38,18 @@ public class HierarchyRepresentation {
         final List<Object> childrenToList = employees.stream().map(this::employeeToMap).collect(toList());
         childrenToList.sort(comparing(Object::toString));
         return childrenToList;
+    }
+
+    public Map<String, Object> getManagementChain(final Employee employee) {
+        return employeeToManagerMap(employee);
+    }
+
+    private Map<String, Object> employeeToManagerMap(final Employee employee) {
+        final var manager = employee.getManager();
+        if (manager != null) {
+            return Map.of(employee.getName(), employeeToManagerMap(manager));
+        } else {
+            return Map.of(employee.getName(), EMPTY);
+        }
     }
 }

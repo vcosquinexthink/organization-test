@@ -26,5 +26,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         return countDistinctByManagerIsNull();
     }
 
-    List<Employee> findByManagerIs(Employee manager);
 }

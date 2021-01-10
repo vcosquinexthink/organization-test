@@ -85,16 +85,4 @@ public class EmployeeRepositoryTestIT {
 
         assertThat(new Employee("new employee"), is(newEmployeeCreated));
     }
-
-    @Test
-    public void findByManagerIsShouldReturnManagedEmployees() {
-        final var boss = new Employee("boss 1");
-
-        final var employee1 = new Employee("employee 1");
-        employee1.setManager(boss);
-        employeeRepository.save(employee1);
-
-        final var managedEmployees = employeeRepository.findByManagerIs(boss);
-        assertThat(managedEmployees, contains(employee1));
-    }
 }

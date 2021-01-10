@@ -1,7 +1,5 @@
 package com.company.organization.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 
 import javax.persistence.CascadeType;
@@ -21,21 +19,19 @@ public class Employee {
 
     @Id
     @GeneratedValue
-    @JsonIgnore
     private Long id;
 
     private String name;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     @JoinColumn(name = "manager")
     private Employee manager;
 
     @OneToMany
-    @JsonIgnore
     private List<Employee> managed = new ArrayList();
 
-    public Employee() { }
+    public Employee() {
+    }
 
     public Employee(final String name) {
         this.name = name;
@@ -49,7 +45,6 @@ public class Employee {
         this.managed.add(managed);
     }
 
-    @JsonIgnore
     public boolean isRoot() {
         return manager == null;
     }

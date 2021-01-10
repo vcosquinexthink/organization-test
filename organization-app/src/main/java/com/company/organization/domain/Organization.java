@@ -37,7 +37,7 @@ public class Organization {
     }
 
     @Transactional
-    public void addEmployees(final Map<String, String> newEmployees) throws DuplicateRootException, CyclicDependencyException {
+    public void addEmployees(final Map<String, String> newEmployees) throws IllegalOrganizationException {
         newEmployees.forEach((employeeName, managerName) -> {
             final var employee = employeeRepository.findByNameOrCreate(employeeName);
             final var manager = employeeRepository.findByNameOrCreate(managerName);
@@ -49,7 +49,7 @@ public class Organization {
         if (employeeRepository.countRoots() > 1) {
             final var roots = employeeRepository.findRoots().stream()
                 .map(Employee::getName).collect(toList());
-            throw new DuplicateRootException("Error: More than one root was added: " + roots);
+            throw new IllegalOrganizationException("Error: More than one root was added: " + roots);
         }
     }
 
@@ -58,7 +58,7 @@ public class Organization {
             final var manager = employee.getManager();
             if (manager != null) {
                 if (manager.equals(self)) {
-                    throw new CyclicDependencyException(format("Error: There is a cyclic dependency in employee [%s]", employee.getName()));
+                    throw new IllegalOrganizationException(format("Error: There is a cyclic dependency in employee [%s]", employee.getName()));
                 }
                 checkCyclicDep(manager, employee);
             }

@@ -1,6 +1,9 @@
 spring:
   datasource:
     url: jdbc:h2:file:./target/organization.database
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 server:
   error:
     include-message: always

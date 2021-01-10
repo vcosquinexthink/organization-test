@@ -33,8 +33,9 @@ public class OrganizationController {
         return hierarchyRepresentation.getHierarchy();
     }
 
-    @GetMapping(value = "/organization/employee/{employeeName}", produces = "application/json")
-    public Employee getEmployee(@PathVariable(value = "employeeName") String employeeName) {
-        return organization.getEmployee(new Employee(employeeName));
+    @GetMapping(value = "/organization/employee/{employeeName}/management", produces = "application/json")
+    public Map<String, Object> getEmployee(@PathVariable(value = "employeeName") String employeeName) {
+        final var employee = organization.getEmployee(new Employee(employeeName));
+        return hierarchyRepresentation.getManagementChain(employee);
     }
 }

@@ -76,7 +76,7 @@ public class OrganizationHierarchyStepDefs implements En {
 
         When("^we check the management chain for \"([^\"]*)\"$", (String employeeName) -> {
             final var request = newBuilder(
-                create("http://localhost:" + applicationPort + "/organization/employee/" + employeeName))
+                create("http://localhost:" + applicationPort + "/organization/employee/" + employeeName + "/management"))
                 .header("Authorization", "Basic dXNlcjpwYXNzd29yZA==")
                 .GET().build();
             final var response = newHttpClient().send(request, ofString());

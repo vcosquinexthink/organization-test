@@ -34,10 +34,9 @@ Avoid nonsense hierarchies that contain loops.
 List of things yet to make and do
 * (+) volume and performance tests to define system limits ant its behaviour beyond them
 * (+) identify more potential errors in input
-* (-) do not expose entities externally as json objects
 * (-) make acceptance tests scenarios independent with database cleanup between them
 * (-) add an index to employee name field in database
-* (-) change List to Map in HierarchyRepresentation class to exactly match the contract of the test
+* (-) change List to Map in HierarchyRepresentation to exactly match the contract of the requirement
 * (-) secure/externalize authentication
 * (--) more integration tests for security config
 * (--) faster creation of docker image with layers

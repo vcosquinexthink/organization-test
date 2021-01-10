@@ -17,7 +17,7 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
     When we check the management chain for "Barbara"
     Then management chain is:
     """
-      {"name":"Barbara","manager":{"name":"Nick","manager":{"name":"Sophie","manager":{"name":"Jonas"}}}}
+      {"Barbara":{"Nick":{"Sophie":{"Jonas":{}}}}}
     """
 
   Scenario: Organization hierarchy should prevent multiple roots from being added

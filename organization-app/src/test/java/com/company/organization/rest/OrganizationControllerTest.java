@@ -53,7 +53,8 @@ class OrganizationControllerTest {
     public void getEmployeeShouldReturnEmployee() {
         final var employee = new Employee("employee-1");
         when(organizationMock.getEmployee(employee)).thenReturn(employee);
+        when(hierarchyRepresentationMock.getManagementChain(employee)).thenReturn(Map.of());
 
-        assertThat(organizationController.getEmployee("employee-1"), is(employee));
+        assertThat(organizationController.getEmployee("employee-1"), is(Map.of()));
     }
 }

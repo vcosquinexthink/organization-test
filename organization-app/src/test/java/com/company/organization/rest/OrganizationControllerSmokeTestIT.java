@@ -1,6 +1,6 @@
 package com.company.organization.rest;
 
-import com.company.organization.domain.CyclicDependencyException;
+import com.company.organization.domain.IllegalOrganizationException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +72,7 @@ public class OrganizationControllerSmokeTestIT {
                 "Barbara", "Nick",
                 "Nick", "Sophie",
                 "Sophie", "Jonas"));
-        final var exception = assertThrows(CyclicDependencyException.class, () -> {
+        final var exception = assertThrows(IllegalOrganizationException.class, () -> {
             controller.setOrganization(Map.of("Sophie", "Nick"));
         });
         assertThat(exception.getMessage(), is("Error: There is a cyclic dependency in employee [Nick]"));

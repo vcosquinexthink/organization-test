@@ -84,7 +84,7 @@ class OrganizationTest {
     public void addEmployeesShouldFailWhenMoreThanOneRoot() {
         when(employeeRepositoryMock.countRoots()).thenReturn((long) 2);
 
-        assertThrows(DuplicateRootException.class, () -> {
+        assertThrows(IllegalOrganizationException.class, () -> {
             organization.addEmployees(Map.of());
         });
     }

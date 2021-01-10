@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Map;
 
+import static com.company.organization.rest.HierarchyRepresentation.EMPTY;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
@@ -53,5 +54,22 @@ class HierarchyRepresentationTest {
         final var hierarchy = hierarchyRepresentation.getHierarchy();
 
         assertThat(hierarchy, is(Map.of()));
+    }
+
+    @Test
+    @SneakyThrows
+    public void itShouldReturnTheRightManagementChain() {
+        final var jonas = new Employee("1");
+        final var sophie = new Employee("2");
+        jonas.addManaged(sophie);
+        sophie.setManager(jonas);
+        final var nick = new Employee("3");
+        sophie.addManaged(nick);
+        nick.setManager(sophie);
+
+        final var chain = hierarchyRepresentation.getManagementChain(nick);
+
+        final var expectedChain = Map.of("3", Map.of("2", Map.of("1", EMPTY)));
+        assertThat(chain, is(expectedChain));
     }
 }
