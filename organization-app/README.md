@@ -1,3 +1,5 @@
+# Run instructions
+
 * start the application with Maven by running the following command:
 
 ```mvn spring-boot:run```

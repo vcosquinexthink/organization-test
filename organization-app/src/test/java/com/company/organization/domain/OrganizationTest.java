@@ -15,7 +15,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
@@ -53,17 +52,6 @@ class OrganizationTest {
         assertThat(organization.getRootEmployee(), is(new Employee("manager 1")));
     }
 
-    @SneakyThrows
-    @Test
-    public void getEmployeesShouldReturnAllEmployees() {
-        final var manager = new Employee("manager 1");
-        final var employee = new Employee("employee 1");
-        employee.setManager(manager);
-        when(employeeRepositoryMock.findAll()).thenReturn(List.of(employee, manager));
-
-        assertThat(organization.getEmployees(), contains(employee, manager));
-    }
-
     @Test
     public void getRootEmployeeShouldFailIfNoRootPresent() {
         when(employeeRepositoryMock.findRoots()).thenReturn(List.of());
@@ -90,18 +78,6 @@ class OrganizationTest {
         when(employeeRepositoryMock.countRoots()).thenReturn((long) 1);
 
         assertThat(organization.hasRootEmployee(), is(true));
-    }
-
-    @Test
-    @SneakyThrows
-    public void hasSeveralRootEmployeesShouldReturnTrueWhenSeveralRoots() {
-        when(employeeRepositoryMock.countRoots()).thenReturn((long) 1);
-
-        assertThat(organization.hasSeveralRootEmployees(), is(false));
-
-        when(employeeRepositoryMock.countRoots()).thenReturn((long) 2);
-
-        assertThat(organization.hasSeveralRootEmployees(), is(true));
     }
 
     @Test

@@ -4,7 +4,6 @@ import com.company.organization.infrastructure.EmployeeRepository;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -29,20 +28,12 @@ public class Organization {
         }
     }
 
-    public boolean hasSeveralRootEmployees() {
-        return employeeRepository.countRoots() > 1;
-    }
-
     public boolean hasRootEmployee() {
         return employeeRepository.countRoots() > 0;
     }
 
     public Employee getEmployee(final Employee employee) {
         return employeeRepository.findByNameIs(employee.getName()).orElseThrow(() -> new NoSuchElementException());
-    }
-
-    public List<Employee> getEmployees() {
-        return employeeRepository.findAll();
     }
 
     @Transactional
@@ -55,7 +46,7 @@ public class Organization {
             checkCyclicDep(employee, employee);
             employeeRepository.save(employee);
         });
-        if (hasSeveralRootEmployees()) {
+        if (employeeRepository.countRoots() > 1) {
             final var roots = employeeRepository.findRoots().stream()
                 .map(Employee::getName).collect(toList());
             throw new DuplicateRootException("Error: More than one root was added: " + roots);

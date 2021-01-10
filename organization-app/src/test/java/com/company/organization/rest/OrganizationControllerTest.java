@@ -30,9 +30,9 @@ class OrganizationControllerTest {
 
     @Test
     public void getOrganizationShouldCallHierarchyRepresentation() {
-        when(hierarchyRepresentationMock.toJson()).thenReturn("{}");
+        when(hierarchyRepresentationMock.getHierarchy()).thenReturn(Map.of());
 
-        assertThat(organizationController.getOrganization(), is("{}"));
+        assertThat(organizationController.getOrganization(), is(Map.of()));
     }
 
     @Test

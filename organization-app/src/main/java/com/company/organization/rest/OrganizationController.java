@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,8 +29,8 @@ public class OrganizationController {
     }
 
     @GetMapping(value = "/organization", produces = "application/json")
-    public String getOrganization() {
-        return hierarchyRepresentation.toJson();
+    public Map<String, List<Object>> getOrganization() {
+        return hierarchyRepresentation.getHierarchy();
     }
 
     @GetMapping(value = "/organization/employee/{employeeName}", produces = "application/json")
