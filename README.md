@@ -33,6 +33,7 @@ Avoid nonsense hierarchies that contain loops.
 # todos
 List of things yet to make and do
 * (+) volume and performance tests to define system limits ant its behaviour beyond them
+* (+) swagger doc
 * (+) identify more potential errors in input
 * (-) make acceptance tests scenarios independent with database cleanup between them
 * (-) add an index to employee name field in database
