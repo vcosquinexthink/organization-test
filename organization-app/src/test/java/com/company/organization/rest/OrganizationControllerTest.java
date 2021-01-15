@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -25,12 +26,16 @@ class OrganizationControllerTest {
     @Mock
     Organization organizationMock;
 
-    @Mock
-    HierarchyRepresentation hierarchyRepresentationMock;
+    @Test
+    public void getOrganizationShouldGetHierarchyWithRoot() {
+        when(organizationMock.getRoot()).thenReturn(Optional.of(new Employee("only employee")));
+
+        assertThat(organizationController.getOrganization(), is(Map.of("only employee", Map.of())));
+    }
 
     @Test
-    public void getOrganizationShouldCallHierarchyRepresentation() {
-        when(hierarchyRepresentationMock.getHierarchy()).thenReturn(Map.of());
+    public void getOrganizationShouldGetHierarchyWithEmptyOrganization() {
+        when(organizationMock.getRoot()).thenReturn(Optional.empty());
 
         assertThat(organizationController.getOrganization(), is(Map.of()));
     }
@@ -52,9 +57,8 @@ class OrganizationControllerTest {
     @SneakyThrows
     public void getEmployeeShouldReturnEmployee() {
         final var employee = new Employee("employee-1");
-        when(organizationMock.getEmployee(employee)).thenReturn(employee);
-        when(hierarchyRepresentationMock.getManagementChain(employee)).thenReturn(Map.of());
+        when(organizationMock.getEmployee("employee-1")).thenReturn(Optional.of(employee));
 
-        assertThat(organizationController.getEmployee("employee-1"), is(Map.of()));
+        assertThat(organizationController.getEmployee("employee-1"), is(Map.of("employee-1", Map.of())));
     }
 }

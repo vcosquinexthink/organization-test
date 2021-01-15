@@ -23,7 +23,8 @@ public class EmployeeRepositoryTestIT {
     @Autowired
     EmployeeRepository employeeRepository;
 
-    @Test @Transactional
+    @Test
+    @Transactional
     public void itShouldPersistOnSave() {
         final var boss = new Employee("boss 1");
         final var manager = new Employee("manager 1");
@@ -36,8 +37,8 @@ public class EmployeeRepositoryTestIT {
 
         final var employee1 = employeeRepository.findByNameIs("employee 1").get();
         assertThat(employee1, is(employee));
-        assertThat(employee1.getManager(), is(manager));
-        assertThat(employee1.getManager().getManager(), is(boss));
+        assertThat(employee1.getManager().orElseThrow(), is(manager));
+        assertThat(employee1.getManager().orElseThrow().getManager().orElseThrow(), is(boss));
 
         final var allEmployees = employeeRepository.findAll();
         assertThat(allEmployees.size(), is(3));

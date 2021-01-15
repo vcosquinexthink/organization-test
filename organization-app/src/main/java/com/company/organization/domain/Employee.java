@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -39,6 +40,10 @@ public class Employee {
 
     public void setManager(final Employee parent) {
         this.manager = parent;
+    }
+
+    public Optional<Employee> getManager() {
+        return Optional.ofNullable(manager);
     }
 
     public void addManaged(Employee managed) {

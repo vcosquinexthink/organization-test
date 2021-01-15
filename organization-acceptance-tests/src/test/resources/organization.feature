@@ -10,7 +10,7 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
     When we check the organization hierarchy
     Then organization hierarchy is:
     """
-      {"Jonas":[{"Sophie":[{"Nick":[{"Barbara":[]},{"Pete":[]}]}]}]}
+      {"Jonas":{"Sophie":{"Nick":{"Pete":{},"Barbara":{}}}}}
     """
 
   Scenario: Application should return the management chain for an employee

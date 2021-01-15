@@ -11,7 +11,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -31,16 +30,15 @@ class OrganizationTest {
 
     @SneakyThrows
     @Test
-    public void hierarchyShouldResolveManagedEmployee() {
+    public void hierarchyShouldGetManagedEmployee() {
         final var manager = new Employee("manager 1");
         final var employee = new Employee("employee 1");
         employee.setManager(manager);
         when(employeeRepositoryMock.findByNameIs("employee 1")).thenReturn(Optional.of(employee));
 
-        final var foundEmployee = organization.getEmployee(
-            new Employee("employee 1")).getManager();
+        final var foundEmployee = organization.getEmployee("employee 1").get().getManager();
 
-        assertThat(foundEmployee, is(new Employee("manager 1")));
+        assertThat(foundEmployee.get(), is(new Employee("manager 1")));
     }
 
     @SneakyThrows
@@ -49,35 +47,20 @@ class OrganizationTest {
         final var manager = new Employee("manager 1");
         when(employeeRepositoryMock.findRoots()).thenReturn(List.of(manager));
 
-        assertThat(organization.getRootEmployee(), is(new Employee("manager 1")));
+        assertThat(organization.getRoot().get(), is(new Employee("manager 1")));
     }
 
     @Test
     public void getRootEmployeeShouldFailIfNoRootPresent() {
         when(employeeRepositoryMock.findRoots()).thenReturn(List.of());
-        assertThrows(NoSuchElementException.class, () -> {
-            organization.getRootEmployee();
-        });
+        organization.getRoot().isEmpty();
     }
 
     @Test
     public void getManagedEmployeeShouldFailIfNoSuchEmployeePresent() {
-        when(employeeRepositoryMock.findByNameIs("foo")).thenThrow(new NoSuchElementException());
-        assertThrows(NoSuchElementException.class, () -> {
-            organization.getEmployee(new Employee("foo"));
-        });
-    }
+        when(employeeRepositoryMock.findByNameIs("foo")).thenReturn(Optional.empty());
 
-    @Test
-    @SneakyThrows
-    public void hasRootShouldReturnTrueWhenRoot() {
-        when(employeeRepositoryMock.countRoots()).thenReturn((long) 0);
-
-        assertThat(organization.hasRootEmployee(), is(false));
-
-        when(employeeRepositoryMock.countRoots()).thenReturn((long) 1);
-
-        assertThat(organization.hasRootEmployee(), is(true));
+        assertThat(organization.getEmployee("foo").isEmpty(), is(true));
     }
 
     @Test
@@ -100,6 +83,6 @@ class OrganizationTest {
         organization.addEmployees(Map.of("employee1", "b"));
 
         verify(employeeRepositoryMock).save(savedEmployee1Captor.capture());
-        assertThat(savedEmployee1Captor.getValue().getManager(), is(boss));
+        assertThat(savedEmployee1Captor.getValue().getManager().get(), is(boss));
     }
 }

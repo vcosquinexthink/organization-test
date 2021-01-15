@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
 import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static java.lang.String.format;
 import static java.util.stream.Collectors.toList;
@@ -19,21 +19,12 @@ public class Organization {
         this.employeeRepository = employeeRepository;
     }
 
-    public Employee getRootEmployee() {
-        final var roots = employeeRepository.findRoots();
-        if (roots.size() > 0) {
-            return roots.get(0);
-        } else {
-            throw new NoSuchElementException("No root was found in the organization");
-        }
+    public Optional<Employee> getRoot() {
+        return employeeRepository.findRoots().stream().findAny();
     }
 
-    public boolean hasRootEmployee() {
-        return employeeRepository.countRoots() > 0;
-    }
-
-    public Employee getEmployee(final Employee employee) {
-        return employeeRepository.findByNameIs(employee.getName()).orElseThrow(() -> new NoSuchElementException());
+    public Optional<Employee> getEmployee(final String employeeName) {
+        return employeeRepository.findByNameIs(employeeName);
     }
 
     @Transactional
@@ -55,13 +46,12 @@ public class Organization {
 
     private void checkCyclicDep(final Employee employee, final Employee self) {
         if (!employee.isRoot()) {
-            final var manager = employee.getManager();
-            if (manager != null) {
+            employee.getManager().ifPresent(manager -> {
                 if (manager.equals(self)) {
                     throw new IllegalOrganizationException(format("Error: There is a cyclic dependency in employee [%s]", employee.getName()));
                 }
                 checkCyclicDep(manager, employee);
-            }
+            });
         }
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.transaction.Transactional;
-import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -41,7 +40,8 @@ public class OrganizationControllerSmokeTestIT {
                 "Nick", "Sophie",
                 "Sophie", "Jonas"));
 
-        final var expected = Map.of("Jonas", List.of(Map.of("Sophie", List.of(Map.of("Nick", List.of(Map.of("Barbara", List.of()), Map.of("Pete", List.of())))))));
+        final var expected =
+            Map.of("Jonas", Map.of("Sophie", Map.of("Nick", Map.of("Barbara", Map.of(), "Pete", Map.of()))));
         assertThat(controller.getOrganization(),
             is(expected));
     }
@@ -55,12 +55,14 @@ public class OrganizationControllerSmokeTestIT {
                 "Nick", "Sophie",
                 "Sophie", "Jonas"));
 
-        final var expectedBefore = Map.of("Jonas", List.of(Map.of("Sophie", List.of(Map.of("Nick", List.of(Map.of("Barbara", List.of()), Map.of("Pete", List.of())))))));
+        final var expectedBefore =
+            Map.of("Jonas", Map.of("Sophie", Map.of("Nick", Map.of("Barbara", Map.of(), "Pete", Map.of()))));
         assertThat(controller.getOrganization(), is(expectedBefore));
 
         controller.setOrganization(Map.of(
             "Angela", "Jonas"));
-        final var expectedAfter = Map.of("Jonas", List.of(Map.of("Angela", List.of()), Map.of("Sophie", List.of(Map.of("Nick", List.of(Map.of("Barbara", List.of()), Map.of("Pete", List.of())))))));
+        final var expectedAfter =
+            Map.of("Jonas", Map.of("Angela", Map.of(), "Sophie", Map.of("Nick", Map.of("Barbara", Map.of(), "Pete", Map.of()))));
         assertThat(controller.getOrganization(), is(expectedAfter));
     }
 

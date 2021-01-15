@@ -1,55 +1,29 @@
 package com.company.organization.rest;
 
 import com.company.organization.domain.Employee;
-import com.company.organization.domain.Organization;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toMap;
 
-@Component
 public class HierarchyRepresentation {
 
-    public static final Object EMPTY = new Object();
-
-    private final Organization organization;
-
-    public HierarchyRepresentation(final Organization organization) {
-        this.organization = organization;
-    }
-
-    public Map<String, List<Object>> getHierarchy() {
-        if (organization.hasRootEmployee()) {
-            final var rootEmployee = employeeToMap(organization.getRootEmployee());
-            return (rootEmployee);
-        } else {
+    public static Map<String, Map> downstreamHierarchy(final List<Employee> employees) {
+        if (employees.isEmpty()) {
             return Map.of();
+        } else {
+            return employees.stream().collect(
+                toMap(Employee::getName, employee -> downstreamHierarchy(employee.getManaged())));
         }
     }
 
-    private Map<String, List<Object>> employeeToMap(final Employee employee) {
-        return Map.of(employee.getName(), childrenToList(employee.getManaged()));
-    }
-
-    private List<Object> childrenToList(final List<Employee> employees) {
-        final List<Object> childrenToList = employees.stream().map(this::employeeToMap).collect(toList());
-        childrenToList.sort(comparing(Object::toString));
-        return childrenToList;
-    }
-
-    public Map<String, Object> getManagementChain(final Employee employee) {
-        return employeeToManagerMap(employee);
-    }
-
-    private Map<String, Object> employeeToManagerMap(final Employee employee) {
-        final var manager = employee.getManager();
-        if (manager != null) {
-            return Map.of(employee.getName(), employeeToManagerMap(manager));
+    public static Map<String, Map> upstreamHierarchy(final Employee employee) {
+        final var managerOpt = employee.getManager();
+        if (managerOpt.isPresent()) {
+            return Map.of(employee.getName(), upstreamHierarchy(managerOpt.get()));
         } else {
-            return Map.of(employee.getName(), EMPTY);
+            return Map.of(employee.getName(), Map.of());
         }
     }
 }
