@@ -3,34 +3,34 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
   Scenario: Organization hierarchy should be correctly configured
     Given we have set the following organization hierarchy:
       | employee | supervisor |
-      | Pete     | Nick       |
-      | Barbara  | Nick       |
-      | Nick     | Sophie     |
-      | Sophie   | Jonas      |
+      | Carl     | Amanda     |
+      | Samuel   | Amanda     |
+      | Amanda   | Olga       |
+      | Olga     | Jane       |
     When we check the organization hierarchy
     Then organization hierarchy is:
     """
-      {"Jonas":{"Sophie":{"Nick":{"Pete":{},"Barbara":{}}}}}
+      {"Jane":{"Olga":{"Amanda":{"Samuel":{},"Carl":{}}}}}
     """
 
   Scenario: Application should return the management chain for an employee
-    When we check the management chain for "Barbara"
+    When we check the management chain for "Samuel"
     Then management chain is:
     """
-      {"Barbara":{"Nick":{"Sophie":{"Jonas":{}}}}}
+      {"Samuel":{"Amanda":{"Olga":{"Jane":{}}}}}
     """
 
   Scenario: Organization hierarchy should prevent multiple roots from being added
     When we try to add the following organization hierarchy:
       | employee | supervisor |
-      | Alma     | Carl       |
-    Then application rejects it with the following error message "Error: More than one root was added: [Jonas, Carl]"
+      | Alma     | Mike       |
+    Then application rejects it with the following error message "Error: More than one root was added: [Jane, Mike]"
 
   Scenario: Organization hierarchy should prevent cyclic dependencies
     When we try to add the following organization hierarchy:
       | employee | supervisor |
-      | Sophie   | Nick       |
-    Then application rejects it with the following error message "Error: There is a cyclic dependency in employee [Nick]"
+      | Olga     | Amanda     |
+    Then application rejects it with the following error message "Error: There is a cyclic dependency in employee [Amanda]"
 
   Scenario: Users without credentials can not access the system
     When we call the application with wrong credentials

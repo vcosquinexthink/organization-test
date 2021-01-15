@@ -35,13 +35,13 @@ public class OrganizationControllerSmokeTestIT {
     @Transactional
     public void controllerShouldSetOrganization() {
         controller.setOrganization(
-            Map.of("Pete", "Nick",
-                "Barbara", "Nick",
-                "Nick", "Sophie",
-                "Sophie", "Jonas"));
+            Map.of("Carl", "Amanda",
+                "Samuel", "Amanda",
+                "Amanda", "Olga",
+                "Olga", "Jane"));
 
         final var expected =
-            Map.of("Jonas", Map.of("Sophie", Map.of("Nick", Map.of("Barbara", Map.of(), "Pete", Map.of()))));
+            Map.of("Jane", Map.of("Olga", Map.of("Amanda", Map.of("Samuel", Map.of(), "Carl", Map.of()))));
         assertThat(controller.getOrganization(),
             is(expected));
     }
@@ -50,19 +50,19 @@ public class OrganizationControllerSmokeTestIT {
     @Transactional
     public void controllerShouldUpdateOrganization() {
         controller.setOrganization(
-            Map.of("Pete", "Nick",
-                "Barbara", "Nick",
-                "Nick", "Sophie",
-                "Sophie", "Jonas"));
+            Map.of("Carl", "Amanda",
+                "Samuel", "Amanda",
+                "Amanda", "Olga",
+                "Olga", "Jane"));
 
         final var expectedBefore =
-            Map.of("Jonas", Map.of("Sophie", Map.of("Nick", Map.of("Barbara", Map.of(), "Pete", Map.of()))));
+            Map.of("Jane", Map.of("Olga", Map.of("Amanda", Map.of("Samuel", Map.of(), "Carl", Map.of()))));
         assertThat(controller.getOrganization(), is(expectedBefore));
 
         controller.setOrganization(Map.of(
-            "Angela", "Jonas"));
+            "Angela", "Jane"));
         final var expectedAfter =
-            Map.of("Jonas", Map.of("Angela", Map.of(), "Sophie", Map.of("Nick", Map.of("Barbara", Map.of(), "Pete", Map.of()))));
+            Map.of("Jane", Map.of("Angela", Map.of(), "Olga", Map.of("Amanda", Map.of("Samuel", Map.of(), "Carl", Map.of()))));
         assertThat(controller.getOrganization(), is(expectedAfter));
     }
 
@@ -70,13 +70,13 @@ public class OrganizationControllerSmokeTestIT {
     @Transactional
     public void controllerShouldPreventCyclicDependencies() {
         controller.setOrganization(
-            Map.of("Pete", "Nick",
-                "Barbara", "Nick",
-                "Nick", "Sophie",
-                "Sophie", "Jonas"));
+            Map.of("Carl", "Amanda",
+                "Samuel", "Amanda",
+                "Amanda", "Olga",
+                "Olga", "Jane"));
         final var exception = assertThrows(IllegalOrganizationException.class, () -> {
-            controller.setOrganization(Map.of("Sophie", "Nick"));
+            controller.setOrganization(Map.of("Olga", "Amanda"));
         });
-        assertThat(exception.getMessage(), is("Error: There is a cyclic dependency in employee [Nick]"));
+        assertThat(exception.getMessage(), is("Error: There is a cyclic dependency in employee [Amanda]"));
     }
 }
