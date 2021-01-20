@@ -1,3 +1,7 @@
+# About
+Test project to deliver a *java 11* *spring boot* microservice exposing a *rest* interface, the data is persisted in a *h2* database.
+The project includes aceptance tests verification with *cucumber* and is delivered as a *docker* image.
+
 # Prerequisites
 Things you need to have installed
 * java 11 (install via SDKMan)
