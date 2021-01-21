@@ -1,0 +1,22 @@
+version: '3'
+networks:
+  organization-network:
+    driver: bridge
+services:
+  organization-service:
+    image: docker.io/library/organization-app:latest
+    deploy:
+      replicas: 2
+    networks:
+      - organization-network
+
+  ngnix-server:
+    image: nginx:1.13
+    ports:
+      - "8080:80"
+    volumes:
+      - '../resources/nginx.conf:/etc/nginx/nginx.conf'
+    networks:
+      - "organization-network"
+    depends_on:
+      - organization-service

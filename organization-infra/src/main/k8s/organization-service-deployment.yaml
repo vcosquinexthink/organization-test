@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o ../k8s
+    kompose.version: 1.22.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: organization-service
+  name: organization-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      io.kompose.service: organization-service
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o ../k8s
+        kompose.version: 1.22.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/organization-network: "true"
+        io.kompose.service: organization-service
+    spec:
+      containers:
+        - image: docker.io/library/organization-app:latest
+          name: organization-service
+          resources: {}
+      restartPolicy: Always
+status: {}
