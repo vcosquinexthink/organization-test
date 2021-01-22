@@ -29,7 +29,7 @@ public class Employee {
     private Employee manager;
 
     @OneToMany
-    private List<Employee> managed = new ArrayList();
+    private final List<Employee> managed = new ArrayList<>();
 
     public Employee() {
     }

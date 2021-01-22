@@ -27,6 +27,8 @@ I would really like it if the hierarchy could be stored in a relational database
 I want to send the name of an employee to an endpoint, and receive the name of the supervisor and the name of the supervisor’s supervisor in return.
 ### \#6 
 Avoid nonsense hierarchies that contain loops.
+### \#7 
+Enable monitoring metrics.
 
 # assumptions
 * The employee name is unique and can not be duplicated

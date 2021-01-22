@@ -31,7 +31,3 @@ Feature: Organization scenarios, these scenarios should cover the basic, most cr
       | employee | supervisor |
       | Olga     | Amanda     |
     Then application rejects it with the following error message "Error: There is a cyclic dependency in employee [Amanda]"
-
-  Scenario: Users without credentials can not access the system
-    When we call the application with wrong credentials
-    Then we receive an unauthenticated error code

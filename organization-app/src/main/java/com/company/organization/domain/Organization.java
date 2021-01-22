@@ -13,7 +13,7 @@ import static java.util.stream.Collectors.toList;
 @Component
 public class Organization {
 
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
 
     public Organization(final EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;

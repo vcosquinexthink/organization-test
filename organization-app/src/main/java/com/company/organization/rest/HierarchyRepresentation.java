@@ -20,10 +20,9 @@ public class HierarchyRepresentation {
 
     public static Map<String, Map> upstreamHierarchy(final Employee employee) {
         final var managerOpt = employee.getManager();
-        if (managerOpt.isPresent()) {
-            return Map.of(employee.getName(), upstreamHierarchy(managerOpt.get()));
-        } else {
-            return Map.of(employee.getName(), Map.of());
-        }
+        return managerOpt.<Map<String, Map>>map(value ->
+                Map.of(employee.getName(), upstreamHierarchy(value)))
+            .orElseGet(() ->
+                Map.of(employee.getName(), Map.of()));
     }
 }
