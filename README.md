@@ -38,6 +38,11 @@ Enable monitoring metrics.
 
 # todos
 List of things yet to make and do
+* (+) split grafana dashboard for each service instance
+* (+) create a dummy business metric
+* (+) create a connect another micro and connect it with organization micro (employees directory)
+* (+) ci/cd to cloud (terraform? Kubernetes?)
+* (+) move the infra to a different repo 
 * (+) volume and performance tests to define system limits ant its behaviour beyond them
 * (+) swagger doc
 * (+) identify more potential errors in input
