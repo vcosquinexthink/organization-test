@@ -1,6 +1,7 @@
 package com.company.organization.infrastructure;
 
 import com.company.organization.domain.Employee;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     List<Employee> findDistinctByManagerIsNull();
 
+    @NewSpan
     default List<Employee> findRoots() {
         return findDistinctByManagerIsNull();
     }

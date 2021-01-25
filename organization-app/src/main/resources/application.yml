@@ -1,9 +1,16 @@
 spring:
+  application:
+    name: Organization
   datasource:
     url: jdbc:h2:file:./target/organization.database
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
+  zipkin:
+    baseUrl: http://zipkin:9411
+  sleuth:
+    sampler:
+      probability: 1.0
 server:
   error:
     include-message: always

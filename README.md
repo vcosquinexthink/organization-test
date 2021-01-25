@@ -29,6 +29,8 @@ I want to send the name of an employee to an endpoint, and receive the name of t
 Avoid nonsense hierarchies that contain loops.
 ### \#7 
 Enable monitoring metrics.
+### \#8
+Add requests tracing.
 
 # assumptions
 * The employee name is unique and can not be duplicated
