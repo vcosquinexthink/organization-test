@@ -1,3 +1,5 @@
+![build](https://github.com/vcosqui/organization-test/workflows/build/badge.svg?branch=master)
+
 # About
 Test project to deliver a *java 11* *spring boot* microservice exposing a *rest* interface, the data is persisted in a *h2* database.
 The project includes aceptance tests verification with *cucumber* and is delivered as a *docker* image.
