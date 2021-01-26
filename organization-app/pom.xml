@@ -94,7 +94,7 @@
                 </executions>
                 <configuration>
                     <image>
-                        <name>docker.io/vcosqui/${project.artifactId}:${project.version}</name>
+                        <name>docker.io/vcosqui/${project.artifactId}</name>
                     </image>
                 </configuration>
             </plugin>
