@@ -4,6 +4,6 @@ build:
 
 push:
 	docker images
-	docker push docker.io/vcosqui/organization-app-docker:latest
+	docker push docker.io/vcosqui/organization-app:latest
 
 
