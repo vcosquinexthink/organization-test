@@ -1,5 +1,6 @@
 ![build](https://github.com/vcosqui/organization-test/workflows/build/badge.svg?branch=master)
 [![Known Vulnerabilities](https://snyk.io/test/github/vcosqui/organization-test/badge.svg)](https://snyk.io/test/github/vcosqui/organization-test)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/vcosqui/organization-app)
 
 # About
 Test project to deliver a *java 11* *spring boot* microservice exposing a *rest* interface, the data is persisted in a *h2* database.
