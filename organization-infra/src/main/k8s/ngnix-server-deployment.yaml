@@ -4,7 +4,6 @@ metadata:
   annotations:
     kompose.cmd: kompose convert -o ../k8s
     kompose.version: 1.22.0 (HEAD)
-  creationTimestamp: null
   labels:
     io.kompose.service: ngnix-server
   name: ngnix-server
@@ -20,7 +19,6 @@ spec:
       annotations:
         kompose.cmd: kompose convert -o ../k8s
         kompose.version: 1.22.0 (HEAD)
-      creationTimestamp: null
       labels:
         io.kompose.network/organization-network: "true"
         io.kompose.service: ngnix-server
@@ -28,9 +26,15 @@ spec:
       containers:
         - image: nginx:1.13
           name: ngnix-server
+          securityContext:
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           ports:
             - containerPort: 80
           resources: {}
+          imagePullPolicy: Always
           volumeMounts:
             - mountPath: /etc/nginx/nginx.conf
               name: ngnix-server-claim0
@@ -39,4 +43,3 @@ spec:
         - name: ngnix-server-claim0
           persistentVolumeClaim:
             claimName: ngnix-server-claim0
-status: {}
