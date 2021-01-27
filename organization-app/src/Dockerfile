@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim
+FROM openjdk:13.0-jdk
 RUN addgroup -S runtime && adduser -S runtime -G runtime
 USER runtime:runtime
 COPY target/dependency/BOOT-INF/lib /app/lib
