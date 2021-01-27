@@ -1,4 +1,5 @@
 ![build](https://github.com/vcosqui/organization-test/workflows/build/badge.svg?branch=master)
+[![Known Vulnerabilities](https://snyk.io/test/github/vcosqui/organization-test/badge.svg)](https://snyk.io/test/github/vcosqui/organization-test)
 
 # About
 Test project to deliver a *java 11* *spring boot* microservice exposing a *rest* interface, the data is persisted in a *h2* database.
