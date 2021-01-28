@@ -13,7 +13,7 @@ public class Infrastructure implements En {
     public static final Integer applicationPort;
 
     static {
-        final var tag = getProperty("RELEASE_VERSION", "1.0-SNAPSHOT");
+        final var tag = getProperty("release.version", "1.0-SNAPSHOT");
         applicationContainer = new GenericContainer<>(
             "docker.io/vcosqui/organization-app:" + tag).withExposedPorts(8080);
         applicationContainer.start();
