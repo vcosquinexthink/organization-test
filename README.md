@@ -44,9 +44,11 @@ Add requests tracing.
 
 # todos
 List of things yet to make and do
+* (+++) release management
+* (++) code refactor to be more DDD
 * (+) split grafana dashboard for each service instance
 * (+) create a dummy business metric
-* (+) create a connect another micro and connect it with organization micro (employees directory)
+* (+) create another micro and connect it with organization micro (employees directory)
 * (+) ci/cd to cloud (terraform? Kubernetes?)
 * (+) move the infra to a different repo 
 * (+) volume and performance tests to define system limits ant its behaviour beyond them
