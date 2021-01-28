@@ -25,7 +25,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Build application
-        run: make
+        run: make BUILD_NUMBER=${{ github.run_number }}
 
       - name: Run Snyk to check Docker image for vulnerabilities
         uses: snyk/actions/docker@master
@@ -42,4 +42,4 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
       - name: Push Docker image
-        run: make push
+        run: make push BUILD_NUMBER=${{ github.run_number }}
