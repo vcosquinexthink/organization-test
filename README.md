@@ -10,10 +10,11 @@ The project includes aceptance tests verification with *cucumber* and is deliver
 Things you need to have installed
 * java 11 (install via SDKMan)
 * docker
+* make
 
 # Build process
 To build the project, please run the following command in your terminal
-```mvn clean install```
+```make```
 This will compile, test, etc the application, will create a jar and a local docker image.
 See the readme file inside the application module for instructions on how to run them.
 This build process will also execute the acceptance tests against that docker image to check if still meets the requirements.
@@ -44,12 +45,11 @@ Add requests tracing.
 
 # todos
 List of things yet to make and do
-* (+++) release management
+* (++) ci/cd to cloud (terraform? Kubernetes?)
 * (++) code refactor to be more DDD
 * (+) split grafana dashboard for each service instance
 * (+) create a dummy business metric
 * (+) create another micro and connect it with organization micro (employees directory)
-* (+) ci/cd to cloud (terraform? Kubernetes?)
 * (+) move the infra to a different repo 
 * (+) volume and performance tests to define system limits ant its behaviour beyond them
 * (+) swagger doc
