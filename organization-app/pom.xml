@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.company.organization</groupId>
     <artifactId>organization-app</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <name>organization-app</name>
     <description>Organization application</description>
@@ -94,7 +94,7 @@
                 </executions>
                 <configuration>
                     <image>
-                        <name>docker.io/vcosqui/${project.artifactId}</name>
+                        <name>docker.io/vcosqui/${project.artifactId}:${project.version}</name>
                     </image>
                 </configuration>
             </plugin>
