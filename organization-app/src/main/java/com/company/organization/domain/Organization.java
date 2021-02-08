@@ -3,8 +3,6 @@ package com.company.organization.domain;
 import com.company.organization.infrastructure.EmployeeRepository;
 import org.springframework.stereotype.Component;
 
-import javax.transaction.Transactional;
-import java.util.Map;
 import java.util.Optional;
 
 import static java.lang.String.format;
@@ -27,18 +25,18 @@ public class Organization {
         return employeeRepository.findByNameIs(employeeName);
     }
 
-    @Transactional
-    public void addEmployees(final Map<String, String> newEmployees) throws IllegalOrganizationException {
-        newEmployees.forEach((employeeName, managerName) -> {
-            final var employee = employeeRepository.findByNameOrCreate(employeeName);
-            final var manager = employeeRepository.findByNameOrCreate(managerName);
-            employee.setManager(manager);
-            manager.addManaged(employee);
-            checkCyclicDep(employee, employee);
-            employeeRepository.save(employee);
-        });
+    public void addEmployee(final String employeeName, final String managerName) {
+        final var employee = employeeRepository.findByNameOrCreate(employeeName);
+        final var manager = employeeRepository.findByNameOrCreate(managerName);
+        employee.setManager(manager);
+        manager.addManaged(employee);
+        checkCyclicDep(employee, employee);
+        employeeRepository.save(employee);
+    }
+
+    public void verifySingleRoot() {
         if (employeeRepository.countRoots() > 1) {
-            final var roots = employeeRepository.findRoots().stream()
+            final var roots = employeeRepository.findRoots().stream().collect(toList()).stream()
                 .map(Employee::getName).collect(toList());
             throw new IllegalOrganizationException("Error: More than one root was added: " + roots);
         }

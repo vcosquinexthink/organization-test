@@ -1,6 +1,6 @@
 package com.company.organization.rest;
 
-import com.company.organization.domain.Organization;
+import com.company.organization.domain.OrganizationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,9 +18,9 @@ import static com.company.organization.rest.HierarchyRepresentation.upstreamHier
 @Slf4j
 public class OrganizationController {
 
-    private final Organization organization;
+    private final OrganizationService organization;
 
-    public OrganizationController(final Organization organization) {
+    public OrganizationController(final OrganizationService organization) {
         this.organization = organization;
     }
 

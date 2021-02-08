@@ -1,7 +1,7 @@
 package com.company.organization.rest;
 
 import com.company.organization.domain.Employee;
-import com.company.organization.domain.Organization;
+import com.company.organization.domain.OrganizationService;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,18 +24,18 @@ class OrganizationControllerTest {
     OrganizationController organizationController;
 
     @Mock
-    Organization organizationMock;
+    OrganizationService organizationServiceMock;
 
     @Test
     public void getOrganizationShouldGetHierarchyWithRoot() {
-        when(organizationMock.getRoot()).thenReturn(Optional.of(new Employee("only employee")));
+        when(organizationServiceMock.getRoot()).thenReturn(Optional.of(new Employee("only employee")));
 
         assertThat(organizationController.getOrganization(), is(Map.of("only employee", Map.of())));
     }
 
     @Test
     public void getOrganizationShouldGetHierarchyWithEmptyOrganization() {
-        when(organizationMock.getRoot()).thenReturn(Optional.empty());
+        when(organizationServiceMock.getRoot()).thenReturn(Optional.empty());
 
         assertThat(organizationController.getOrganization(), is(Map.of()));
     }
@@ -50,14 +50,14 @@ class OrganizationControllerTest {
         );
         organizationController.setOrganization(employees);
 
-        verify(organizationMock).addEmployees(employees);
+        verify(organizationServiceMock).addEmployees(employees);
     }
 
     @Test
     @SneakyThrows
     public void getEmployeeShouldReturnEmployee() {
         final var employee = new Employee("employee-1");
-        when(organizationMock.getEmployee("employee-1")).thenReturn(Optional.of(employee));
+        when(organizationServiceMock.getEmployee("employee-1")).thenReturn(Optional.of(employee));
 
         assertThat(organizationController.getEmployee("employee-1"), is(Map.of("employee-1", Map.of())));
     }

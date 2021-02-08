@@ -68,19 +68,19 @@ class OrganizationTest {
         when(employeeRepositoryMock.countRoots()).thenReturn((long) 2);
 
         assertThrows(IllegalOrganizationException.class, () -> {
-            organization.addEmployees(Map.of());
+            organization.verifySingleRoot();
         });
     }
 
     @Test
     @SneakyThrows
-    public void addEmployeesShouldCallRepositorySaveAndSetManager() {
+    public void addEmployeeShouldCallRepositorySaveAndSetManager() {
         final var savedEmployee1Captor = ArgumentCaptor.forClass(Employee.class);
         final var employee1 = new Employee("employee1");
         final var boss = new Employee("b");
         when(employeeRepositoryMock.findByNameOrCreate("employee1")).thenReturn(employee1);
         when(employeeRepositoryMock.findByNameOrCreate("b")).thenReturn(boss);
-        organization.addEmployees(Map.of("employee1", "b"));
+        organization.addEmployee("employee1", "b");
 
         verify(employeeRepositoryMock).save(savedEmployee1Captor.capture());
         assertThat(savedEmployee1Captor.getValue().getManager().get(), is(boss));
