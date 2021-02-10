@@ -11,6 +11,7 @@
     <description>Organization aggregator module</description>
 
     <modules>
+        <module>organization-opentelemetry-dep</module>
         <module>organization-app</module>
         <module>organization-acceptance-tests</module>
     </modules>

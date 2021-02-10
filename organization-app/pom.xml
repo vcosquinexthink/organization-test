@@ -74,6 +74,12 @@
         </dependency>
 
         <dependency>
+            <groupId>io.opentelemetry.javaagent</groupId>
+            <artifactId>opentelemetry-javaagent-all</artifactId>
+            <version>0.15.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
